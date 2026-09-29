@@ -196,6 +196,15 @@ export function loadSpaceSchool() {
             0% { opacity: 0.7; filter: blur(2px); }
             100% { opacity: 1; filter: blur(4px); }
           }
+       @keyframes rocketLaunch {
+  0% { transform: translateY(0); }
+  45% { transform: translateY(-700px); opacity: 0; }
+  50% { transform: translateY(700px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.rocket-launching {
+  animation: rocketLaunch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
         </style>
       </div>
     </div>
