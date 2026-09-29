@@ -1,0 +1,49 @@
+/* --- Master Reset & iPad Lock --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Prevents accidental double-tap zooming on touch screens */
+  touch-action: manipulation; 
+  user-select: none;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Locks the screen in place */
+  background-color: #0f172a; /* Dark fallback color */
+  color: #ffffff;
+}
+
+/* --- The Layer Stacking Engine --- */
+#game-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Stack all layers exactly on top of each other */
+#zone-layer, 
+#particle-canvas-container, 
+#ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#particle-canvas-container {
+  /* Ensures clicks pass right through the floating particles */
+  pointer-events: none; 
+}
+
+#ui-layer {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  /* The container is invisible to clicks, but buttons inside won't be */
+  pointer-events: none; 
+}
