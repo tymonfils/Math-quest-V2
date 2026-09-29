@@ -235,32 +235,24 @@ function setupMathControls() {
   const btn = document.getElementById("math-submit-btn");
   const input = document.getElementById("math-answer-input");
   const rocket = document.querySelector(".vfx-core")?.closest("svg") || document.querySelector(".vfx-ring")?.closest("svg");
-  
-  // Finds the status readout on the console
   const statusSpan = input?.closest("div[style*='125px']")?.querySelector("span");
 
   if (!btn || !input) return;
 
-  function updateHUD(text) {
-    if (statusSpan) {
-      const currentGold = window.Economy ? Economy.getGold() : 0;
-      const currentStreak = window.Economy ? Economy.getStreak() : 0;
-      statusSpan.textContent = text || `GOLD: \({currentGold} | STREAK:\){currentStreak}🔥`;
-    }
+  function setStatus(text) {
+    if (statusSpan) statusSpan.textContent = text;
   }
 
-  // Display initial balance & streak
-  updateHUD();
+  setStatus("SYSTEM: READY");
 
   function checkAnswer() {
     const userVal = parseInt(input.value.trim(), 10);
     if (isNaN(userVal)) return;
 
     if (currentProblem && userVal === currentProblem.answer) {
-      // 1. Award 4-9 gold and bump streak via Economy
+      // 1. Notify Economy (uibar updates automatically via event)
       if (window.Economy) {
-        const result = Economy.awardCorrectAnswer();
-        updateHUD(`+\({result.earned} GOLD! (TOTAL:\){result.totalGold})`);
+        Economy.awardCorrectAnswer();
       }
 
       // 2. Blast off rocket
@@ -273,28 +265,29 @@ function setupMathControls() {
         }, 1400);
       }
 
-      // 3. Green flash, clear box, load next problem
+      // 3. UI feedback & queue next question
+      setStatus("LAUNCH SUCCESS");
       input.style.borderColor = "#10b981";
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
-        updateHUD();
+        setStatus("SYSTEM: READY");
         loadNewEquation();
       }, 900);
 
     } else {
-      // 1. Deduct 2-5 gold and reset streak via Economy
+      // 1. Penalize via Economy
       if (window.Economy) {
-        const result = Economy.penalizeWrongAnswer();
-        updateHUD(`-${result.lost} GOLD! STREAK RESET`);
+        Economy.penalizeWrongAnswer();
       }
 
-      // 2. Red flash
+      // 2. Error feedback
+      setStatus("TRAJECTORY ERROR");
       input.style.borderColor = "#ef4444";
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
-        updateHUD();
+        setStatus("SYSTEM: READY");
       }, 900);
     }
   }
@@ -306,6 +299,9 @@ function setupMathControls() {
 }
 
 setTimeout(() => {
+  loadNewEquation();
+  setupMathControls();
+}, 100);
   loadNewEquation();
   setupMathControls();
 }, 100);
