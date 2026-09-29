@@ -302,6 +302,3 @@ setTimeout(() => {
   loadNewEquation();
   setupMathControls();
 }, 100);
-  loadNewEquation();
-  setupMathControls();
-}, 100);
