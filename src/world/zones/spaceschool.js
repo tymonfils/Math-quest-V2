@@ -250,3 +250,17 @@ export function loadSpaceSchool() {
             </svg>
           </div>
         </div>
+<style>
+          @keyframes hoverTeacher {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+          }
+          @keyframes flickerRepulsor {
+            0% { opacity: 0.7; filter: blur(2px); }
+            100% { opacity: 1; filter: blur(4px); }
+          }
+        </style>
+      </div>
+    </div>
+  `;
+}
