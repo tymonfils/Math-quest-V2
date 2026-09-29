@@ -64,7 +64,6 @@ export function loadSpaceSchool() {
         <!-- WINDOW BEVEL / FRAME -->
         <div style="position: absolute; width: 100%; height: 100%; border: 18px solid #1e293b; box-shadow: inset 0 0 25px rgba(0,0,0,0.95); pointer-events: none;"></div>
       </div>
-      </div>
       <!-- ============================================== -->
       <!-- 3. RIGHT: BOARD & CONSOLE -->
       <div style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
