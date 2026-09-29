@@ -1,3 +1,4 @@
+import { generateProblem } from "../../math/mathEngine.js";
 export function loadSpaceSchool() {
   const zoneLayer = document.getElementById('zone-layer');
   
@@ -77,10 +78,10 @@ export function loadSpaceSchool() {
           <!-- EQUATION STAGE (Center-Left: Dedicated clean layout for arithmetic) -->
           <div id="equation-container" style="z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
             <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: monospace; font-size: 3.5rem; font-weight: bold; color: #f8fafc; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);">
-              <div> 54</div>
-              <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="color: #38bdf8; font-size: 2.8rem;">-</span>
-                <span>28</span>
+              <div id="math-num1">54</div>
+<div style="display: flex; align-items: center; gap: 15px;">
+<span id="math-op" style="color: #38bdf8; font-size: 2.8rem;">-</span>
+<span id="math-num2">28</span>
               </div>
               <div style="width: 100%; height: 4px; background: #38bdf8; margin: 8px 0; box-shadow: 0 0 10px #38bdf8;"></div>
               <div style="color: #38bdf8; letter-spacing: 0.2em;">??</div>
@@ -199,4 +200,18 @@ export function loadSpaceSchool() {
       </div>
     </div>
   `;
+}
+let currentProblem = null;
+
+export function loadNewEquation() {
+  currentProblem = generateProblem();
+  const elNum1 = document.getElementById("math-num1");
+  const elNum2 = document.getElementById("math-num2");
+  const elOp = document.getElementById("math-op");
+
+  if (elNum1 && elNum2 && elOp) {
+    elNum1.textContent = currentProblem.num1;
+    elNum2.textContent = currentProblem.num2;
+    elOp.textContent = currentProblem.operation;
+  }
 }
