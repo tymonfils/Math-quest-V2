@@ -235,46 +235,73 @@ function setupMathControls() {
   const btn = document.getElementById("math-submit-btn");
   const input = document.getElementById("math-answer-input");
   const rocket = document.querySelector(".vfx-core")?.closest("svg") || document.querySelector(".vfx-ring")?.closest("svg");
+  
+  // Finds the status readout on the console
+  const statusSpan = input?.closest("div[style*='125px']")?.querySelector("span");
 
   if (!btn || !input) return;
+
+  function updateHUD(text) {
+    if (statusSpan) {
+      const currentGold = window.Economy ? Economy.getGold() : 0;
+      const currentStreak = window.Economy ? Economy.getStreak() : 0;
+      statusSpan.textContent = text || `GOLD: \({currentGold} | STREAK:\){currentStreak}🔥`;
+    }
+  }
+
+  // Display initial balance & streak
+  updateHUD();
 
   function checkAnswer() {
     const userVal = parseInt(input.value.trim(), 10);
     if (isNaN(userVal)) return;
 
     if (currentProblem && userVal === currentProblem.answer) {
-      // 1. Blast off the rocket
+      // 1. Award 4-9 gold and bump streak via Economy
+      if (window.Economy) {
+        const result = Economy.awardCorrectAnswer();
+        updateHUD(`+\({result.earned} GOLD! (TOTAL:\){result.totalGold})`);
+      }
+
+      // 2. Blast off rocket
       if (rocket) {
         rocket.classList.remove("rocket-launching");
-        void rocket.offsetWidth; // reset animation
+        void rocket.offsetWidth;
         rocket.classList.add("rocket-launching");
         setTimeout(() => {
           rocket.classList.remove("rocket-launching");
         }, 1400);
       }
 
-      // 2. Flash input green, clear, and load next problem
+      // 3. Green flash, clear box, load next problem
       input.style.borderColor = "#10b981";
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
+        updateHUD();
         loadNewEquation();
-      }, 700);
+      }, 900);
+
     } else {
-      // Flash red on incorrect answer
+      // 1. Deduct 2-5 gold and reset streak via Economy
+      if (window.Economy) {
+        const result = Economy.penalizeWrongAnswer();
+        updateHUD(`-${result.lost} GOLD! STREAK RESET`);
+      }
+
+      // 2. Red flash
       input.style.borderColor = "#ef4444";
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
-      }, 600);
+        updateHUD();
+      }, 900);
     }
   }
 
   btn.addEventListener("click", checkAnswer);
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      checkAnswer();
-    }
+    if (e.key === "Enter") checkAnswer();
   });
 }
 
