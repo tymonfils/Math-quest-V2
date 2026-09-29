@@ -215,3 +215,6 @@ export function loadNewEquation() {
     elOp.textContent = currentProblem.operation;
   }
 }
+setTimeout(() => {
+  loadNewEquation();
+}, 50);
