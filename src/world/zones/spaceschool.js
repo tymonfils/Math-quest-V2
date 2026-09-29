@@ -224,6 +224,54 @@ export function loadNewEquation() {
     elOp.textContent = currentProblem.operation;
   }
 }
+function setupMathControls() {
+  const btn = document.getElementById("math-submit-btn");
+  const input = document.getElementById("math-answer-input");
+  const rocket = document.querySelector(".vfx-core")?.closest("svg") || document.querySelector(".vfx-ring")?.closest("svg");
+
+  if (!btn || !input) return;
+
+  function checkAnswer() {
+    const userVal = parseInt(input.value.trim(), 10);
+    if (isNaN(userVal)) return;
+
+    if (currentProblem && userVal === currentProblem.answer) {
+      // 1. Blast off the rocket
+      if (rocket) {
+        rocket.classList.remove("rocket-launching");
+        void rocket.offsetWidth; // reset animation
+        rocket.classList.add("rocket-launching");
+        setTimeout(() => {
+          rocket.classList.remove("rocket-launching");
+        }, 1400);
+      }
+
+      // 2. Flash input green, clear, and load next problem
+      input.style.borderColor = "#10b981";
+      setTimeout(() => {
+        input.style.borderColor = "#38bdf8";
+        input.value = "";
+        loadNewEquation();
+      }, 700);
+    } else {
+      // Flash red on incorrect answer
+      input.style.borderColor = "#ef4444";
+      setTimeout(() => {
+        input.style.borderColor = "#38bdf8";
+        input.value = "";
+      }, 600);
+    }
+  }
+
+  btn.addEventListener("click", checkAnswer);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      checkAnswer();
+    }
+  });
+}
+
 setTimeout(() => {
   loadNewEquation();
-}, 50);
+  setupMathControls();
+}, 100);
