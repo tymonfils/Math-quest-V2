@@ -154,11 +154,11 @@ export function loadSpaceSchool() {
             <span style="font-size: 0.75rem; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px;">Propulsion</span>
           </div>
         </div>
-        <!-- 3B. CONSOLE INTERFACE + ROBOT -->
-        <div style="height: 125px; border-radius: 16px; background: #1e293b; border: 3px solid #475569; box-shadow: 0 6px 20px rgba(0,0,0,0.6); display: grid; grid-template-columns: 2fr 1fr; padding: 12px; box-sizing: border-box; gap: 10px;">
+       <!-- 3B. CONSOLE INTERFACE + ROBOT + INPUT -->
+        <div style="height: 125px; border-radius: 16px; background: #1e293b; border: 3px solid #475569; box-shadow: 0 6px 20px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; box-sizing: border-box; gap: 12px;">
           
           <!-- Console Readouts -->
-          <div style="display: flex; flex-direction: column; justify-content: space-around;">
+          <div style="display: flex; flex-direction: column; justify-content: space-around; height: 100%; min-width: 140px;">
             <div style="display: flex; gap: 10px; align-items: center;">
               <div style="width: 14px; height: 14px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></div>
               <span style="font-size: 0.75rem; color: #94a3b8; letter-spacing: 0.1em;">SYSTEM: READY</span>
@@ -175,7 +175,7 @@ export function loadSpaceSchool() {
 
           <!-- FLOATING ROBOT INSTRUCTOR -->
           <div style="display: flex; justify-content: center; align-items: center; animation: hoverTeacher 4s ease-in-out infinite;">
-            <svg style="width: 75px; height: 95px;" viewBox="0 0 100 120">
+            <svg style="width: 65px; height: 85px;" viewBox="0 0 100 120">
               <rect x="25" y="10" width="50" height="40" rx="10" fill="#e2e8f0" stroke="#334155" stroke-width="3" />
               <rect x="35" y="22" width="12" height="15" rx="3" fill="#0f172a" />
               <rect x="53" y="22" width="12" height="15" rx="3" fill="#0f172a" />
@@ -186,6 +186,13 @@ export function loadSpaceSchool() {
               <circle cx="50" cy="110" r="5" fill="#e0f2fe" />
             </svg>
           </div>
+
+          <!-- ANSWER INPUT + SUBMIT BUTTON -->
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input id="math-answer-input" type="number" placeholder="?" style="width: 70px; height: 50px; text-align: center; font-size: 1.8rem; font-weight: bold; color: #f8fafc; background: #0f172a; border: 2px solid #38bdf8; border-radius: 10px; outline: none; box-shadow: 0 0 12px rgba(56,189,248,0.3);" />
+            <button id="math-submit-btn" style="height: 50px; padding: 0 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #0f172a; font-weight: 800; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(56,189,248,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Launch</button>
+          </div>
+
         </div>
 <style>
           @keyframes hoverTeacher {
