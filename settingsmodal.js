@@ -8,7 +8,7 @@ const SettingsModal = (function () {
     const overlay = document.createElement("div");
     overlay.id = "settings-overlay";
     overlay.style.cssText =
-      "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(4,7,18,0.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:10000;box-sizing:border-box;";
+      "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(4,7,18,0.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:10000;box-sizing:border-box;pointer-events:auto;";
 
     // Main Card Box
     const card = document.createElement("div");
@@ -34,23 +34,19 @@ const SettingsModal = (function () {
     header.appendChild(closeIcon);
     card.appendChild(header);
 
-    // Scrollable container for menu items
+    // Scrollable container
     const listContainer = document.createElement("div");
     listContainer.style.cssText =
       "overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;";
 
-    // Helper to add section labels
     function addSectionLabel(text, color) {
       const label = document.createElement("div");
       label.textContent = text;
       label.style.cssText =
-        "font-size:0.75rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin:10px 0 2px 4px;color:" +
-        color +
-        ";";
+        "font-size:0.75rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin:10px 0 2px 4px;color:" + color + ";";
       listContainer.appendChild(label);
     }
 
-    // Helper to create uniform clickable rows
     function createRow(icon, text, tagText, tagBg, tagColor, onClick) {
       const row = document.createElement("div");
       row.style.cssText =
@@ -63,35 +59,22 @@ const SettingsModal = (function () {
       const right = document.createElement("span");
       right.textContent = tagText;
       right.style.cssText =
-        "background:" +
-        tagBg +
-        ";color:" +
-        tagColor +
-        ";font-size:0.75rem;font-weight:700;padding:4px 10px;border-radius:999px;";
+        "background:" + tagBg + ";color:" + tagColor + ";font-size:0.75rem;font-weight:700;padding:4px 10px;border-radius:999px;";
 
       row.appendChild(left);
       row.appendChild(right);
-
-      if (onClick) {
-        row.addEventListener("click", onClick);
-      }
-
+      if (onClick) row.addEventListener("click", onClick);
       listContainer.appendChild(row);
-      return row;
     }
 
-    // Navigation Section
     addSectionLabel("Navigation", "#38bdf8");
     createRow("🗺️", "Fast Travel", "OPEN", "rgba(56,189,248,0.2)", "#38bdf8", () => {
       close();
       window.dispatchEvent(new CustomEvent("ui-map-clicked"));
     });
     createRow("🛒", "The Shop", "VISIT", "rgba(251,191,36,0.2)", "#fbbf24");
-    createRow("🎁", "Reward Vault", "CLAIM", "rgba(192,132,252,0.2)", "#c084fc");
-
-    // System Section
+    
     addSectionLabel("System", "#94a3b8");
-    createRow("🎵", "Audio & SFX", "ON", "rgba(74,222,128,0.2)", "#4ade80");
     createRow("🔲", "Full Screen", "TOGGLE", "rgba(255,255,255,0.15)", "#f8fafc", () => {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
@@ -100,14 +83,8 @@ const SettingsModal = (function () {
       }
     });
 
-    // Parent Zone Section
-    addSectionLabel("Parent Zone", "#f472b6");
-    createRow("📊", "Report Card", "VIEW", "rgba(244,114,182,0.2)", "#f472b6");
-    createRow("🔒", "Parent Controls", "PIN", "rgba(244,114,182,0.2)", "#f472b6");
-
     card.appendChild(listContainer);
 
-    // Resume button
     const resumeBtn = document.createElement("button");
     resumeBtn.textContent = "Resume Game";
     resumeBtn.style.cssText =
@@ -118,9 +95,7 @@ const SettingsModal = (function () {
     modalLayer.appendChild(overlay);
 
     function close() {
-      if (overlay.parentNode === modalLayer) {
-        modalLayer.removeChild(overlay);
-      }
+      if (overlay.parentNode === modalLayer) modalLayer.removeChild(overlay);
     }
 
     closeIcon.addEventListener("click", close);
@@ -132,4 +107,45 @@ const SettingsModal = (function () {
 
   window.addEventListener("ui-settings-clicked", openSettings);
   return { open: openSettings };
+})();
+2. Verify uibar.js
+Just to be completely sure the click event isn't broken there either, ensure your uibar.js looks like this (again, copy/paste exactly, no swapping):
+
+JavaScript
+// uibar.js - Global Top Navigation Bar
+(function () {
+  function renderUIBar() {
+    const uiLayer = document.getElementById("ui-layer");
+    if (!uiLayer) return;
+
+    const initialGold = window.Economy ? window.Economy.getGold() : 0;
+    const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
+
+    uiLayer.innerHTML = `
+🗺️ Map
+
+🪙 Gold:${initialGold}
+
+🔥 Streak:${initialStreak}
+
+⚙ Settings
+
+`;
+
+const mapBtn = document.getElementById("ui-map-btn");
+if (mapBtn) {
+  mapBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-map-clicked")));
+}
+
+const settingsBtn = document.getElementById("ui-settings-btn");
+if (settingsBtn) {
+  settingsBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-settings-clicked")));
+}
+}
+
+if (document.readyState === "loading") {
+document.addEventListener("DOMContentLoaded", renderUIBar);
+} else {
+renderUIBar();
+}
 })();
