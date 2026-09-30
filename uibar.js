@@ -1,99 +1,59 @@
-// uibar.js - Global Top Navigation Bar (HUD)
-const UIBar = (function () {
-  function init() {
+// uibar.js - Global Top Navigation Bar
+(function () {
+  function renderUIBar() {
     const uiLayer = document.getElementById("ui-layer");
-    if (!uiLayer || document.getElementById("global-ui-bar")) return;
+    if (!uiLayer) return;
 
-    const bar = document.createElement("header");
-    bar.id = "global-ui-bar";
-    bar.style.cssText = `
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      pointer-events: none;
-      user-select: none;
-    `;
+    // Fetch initial values from Economy module if available
+    const initialGold = window.Economy ? window.Economy.getGold() : 0;
+    const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
 
-    // LEFT: Player Stats (Gold & Streak)
-    const leftCluster = document.createElement("div");
-    leftCluster.style.cssText = "display: flex; align-items: center; gap: 12px; pointer-events: auto;";
-    leftCluster.innerHTML = `
-🪙
-0
+    uiLayer.innerHTML = `
+🗺️ Map
 
-🔥
-0
+🪙 Gold:
+${initialGold}
+
+🔥 Streak:
+${initialStreak}
+
+⚙️️ Settings
 
 `;
 
-// RIGHT: Controls (Map & Settings Buttons)
-const rightCluster = document.createElement("div");
-rightCluster.style.cssText = "display: flex; align-items: center; gap: 10px; pointer-events: auto;";
-rightCluster.innerHTML = `
-  
-    🗺️ Map
-  
-  
-    ⚙️
-  
-`;
-
-bar.appendChild(leftCluster);
-bar.appendChild(rightCluster);
-uiLayer.appendChild(bar);
-
-// Initial value populate if Economy is available
-if (window.Economy) {
-  updateValues(window.Economy.getGold(), window.Economy.getStreak());
+// 1. Dispatch Events on click
+const mapBtn = document.getElementById("ui-map-btn");
+if (mapBtn) {
+  mapBtn.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("ui-map-clicked"));
+  });
 }
 
-// Button event dispatches so other modules can handle them independently
-document.getElementById("ui-btn-map")?.addEventListener("click", () => {
-  window.dispatchEvent(new CustomEvent("ui-map-clicked"));
-});
+const settingsBtn = document.getElementById("ui-settings-btn");
+if (settingsBtn) {
+  settingsBtn.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
+  });
+}
 
-document.getElementById("ui-btn-settings")?.addEventListener("click", () => {
-  window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
+// 2. Listen for Economy updates to keep stats live
+window.addEventListener("economy-updated", (e) => {
+  const goldSpan = document.getElementById("ui-gold-display");
+  const streakSpan = document.getElementById("ui-streak-display");
+
+  if (goldSpan && e.detail && e.detail.gold !== undefined) {
+    goldSpan.textContent = e.detail.gold;
+  }
+  if (streakSpan && e.detail && e.detail.streak !== undefined) {
+    streakSpan.textContent = e.detail.streak;
+  }
 });
 }
 
-function updateValues(gold, streak) {
-const goldText = document.getElementById("ui-gold-val");
-const streakText = document.getElementById("ui-streak-val");
-const goldPill = document.getElementById("ui-gold-pill");
-
-if (goldText) goldText.textContent = gold;
-if (streakText) streakText.textContent = streak;
-
-// Small pop feedback
-if (goldPill) {
-  goldPill.style.transform = "scale(1.15)";
-  setTimeout(() => {
-    goldPill.style.transform = "scale(1)";
-  }, 150);
-}
-}
-
-// Decoupled listener: reacts to economy notifications without touching economy code
-window.addEventListener("economy-updated", (event) => {
-const { gold, streak } = event.detail;
-updateValues(gold, streak);
-});
-
+// Mount when DOM is ready
 if (document.readyState === "loading") {
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", renderUIBar);
 } else {
-init();
+renderUIBar();
 }
-
-return {
-update: updateValues
-};
 })();
