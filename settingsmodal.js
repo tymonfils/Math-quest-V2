@@ -1,4 +1,4 @@
-// settingsmodal.js - Global Settings Overlay
+// settingsmodal.js - Clean DOM Modular Settings Deck
 const SettingsModal = (function () {
   function openSettings() {
     const modalLayer = document.getElementById("modal-layer");
@@ -7,123 +7,129 @@ const SettingsModal = (function () {
     // Dimmed glass backdrop
     const overlay = document.createElement("div");
     overlay.id = "settings-overlay";
-    overlay.style.cssText = `
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(4, 7, 18, 0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      animation: settingsFadeIn 0.18s ease-out;
-    `;
+    overlay.style.cssText =
+      "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(4,7,18,0.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:10000;box-sizing:border-box;";
 
-    // Main Card
-    const modalBox = document.createElement("div");
-    modalBox.id = "settings-dialog-card";
-    modalBox.style.cssText = `
-      background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 20px;
-      padding: 24px;
-      width: 92%;
-      max-width: 440px;
-      color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(56, 189, 248, 0.12);
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      max-height: 85vh;
-    `;
+    // Main Card Box
+    const card = document.createElement("div");
+    card.id = "settings-card";
+    card.style.cssText =
+      "background:#0f172a;border:2px solid #38bdf8;border-radius:18px;padding:24px;width:90%;max-width:420px;color:#f8fafc;font-family:system-ui,sans-serif;box-shadow:0 20px 40px rgba(0,0,0,0.8);display:flex;flex-direction:column;max-height:85vh;box-sizing:border-box;";
 
-    // Header styling
-    const sectionTitleStyle = "font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 6px 4px;";
-    
-    modalBox.innerHTML = `
-      
-⚙️
+    // Header bar
+    const header = document.createElement("div");
+    header.style.cssText =
+      "display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #334155;";
 
-Control Deck
-✕
+    const title = document.createElement("div");
+    title.textContent = "⚙ Control Deck";
+    title.style.cssText = "font-size:1.3rem;font-weight:800;color:#f8fafc;";
 
-Navigation
+    const closeIcon = document.createElement("button");
+    closeIcon.textContent = "✕";
+    closeIcon.style.cssText =
+      "background:none;border:none;color:#94a3b8;font-size:1.4rem;cursor:pointer;line-height:1;";
 
-🗺️ Fast Travel
+    header.appendChild(title);
+    header.appendChild(closeIcon);
+    card.appendChild(header);
 
-OPEN
+    // Scrollable container for menu items
+    const listContainer = document.createElement("div");
+    listContainer.style.cssText =
+      "overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;";
 
-🛒 The Shop
-
-VISIT
-
-🎁 Reward Vault
-
-CLAIM
-
-System
-
-🎵 Audio & SFX
-
-ENABLED
-
-🔲 Full Screen
-
-TOGGLE
-
-Parent Zone
-
-📊 Report Card
-
-VIEW
-
-🔒 Parent Controls
-
-PIN
-
-    Resume Game
-  
-`;
-
-overlay.appendChild(modalBox);
-modalLayer.appendChild(overlay);
-
-// Close logic helper
-function closeModal() {
-  if (overlay.parentNode === modalLayer) {
-    modalLayer.removeChild(overlay);
-  }
-}
-
-// Attach listeners safely
-const closeBtn = document.getElementById("modal-close-action");
-const closeIcon = document.getElementById("modal-close-icon");
-if (closeBtn) closeBtn.addEventListener("click", closeModal);
-if (closeIcon) closeIcon.addEventListener("click", closeModal);
-
-overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) closeModal();
-});
-
-// Wire up Fullscreen toggle directly
-const fsRow = document.getElementById("toggle-fullscreen-row");
-if (fsRow) {
-  fsRow.addEventListener("click", () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      document.exitFullscreen().catch(() => {});
+    // Helper to add section labels
+    function addSectionLabel(text, color) {
+      const label = document.createElement("div");
+      label.textContent = text;
+      label.style.cssText =
+        "font-size:0.75rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin:10px 0 2px 4px;color:" +
+        color +
+        ";";
+      listContainer.appendChild(label);
     }
-  });
-}
-}
 
-// Hook into event broadcast from uibar.js
-window.addEventListener("ui-settings-clicked", openSettings);
+    // Helper to create uniform clickable rows
+    function createRow(icon, text, tagText, tagBg, tagColor, onClick) {
+      const row = document.createElement("div");
+      row.style.cssText =
+        "display:flex;justify-content:space-between;align-items:center;background:#1e293b;border:1px solid #334155;padding:12px 14px;border-radius:10px;cursor:pointer;user-select:none;";
 
-return { open: openSettings };
+      const left = document.createElement("div");
+      left.style.cssText = "display:flex;align-items:center;gap:10px;font-weight:600;font-size:0.95rem;";
+      left.textContent = icon + " " + text;
+
+      const right = document.createElement("span");
+      right.textContent = tagText;
+      right.style.cssText =
+        "background:" +
+        tagBg +
+        ";color:" +
+        tagColor +
+        ";font-size:0.75rem;font-weight:700;padding:4px 10px;border-radius:999px;";
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      if (onClick) {
+        row.addEventListener("click", onClick);
+      }
+
+      listContainer.appendChild(row);
+      return row;
+    }
+
+    // Navigation Section
+    addSectionLabel("Navigation", "#38bdf8");
+    createRow("🗺️", "Fast Travel", "OPEN", "rgba(56,189,248,0.2)", "#38bdf8", () => {
+      close();
+      window.dispatchEvent(new CustomEvent("ui-map-clicked"));
+    });
+    createRow("🛒", "The Shop", "VISIT", "rgba(251,191,36,0.2)", "#fbbf24");
+    createRow("🎁", "Reward Vault", "CLAIM", "rgba(192,132,252,0.2)", "#c084fc");
+
+    // System Section
+    addSectionLabel("System", "#94a3b8");
+    createRow("🎵", "Audio & SFX", "ON", "rgba(74,222,128,0.2)", "#4ade80");
+    createRow("🔲", "Full Screen", "TOGGLE", "rgba(255,255,255,0.15)", "#f8fafc", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    // Parent Zone Section
+    addSectionLabel("Parent Zone", "#f472b6");
+    createRow("📊", "Report Card", "VIEW", "rgba(244,114,182,0.2)", "#f472b6");
+    createRow("🔒", "Parent Controls", "PIN", "rgba(244,114,182,0.2)", "#f472b6");
+
+    card.appendChild(listContainer);
+
+    // Resume button
+    const resumeBtn = document.createElement("button");
+    resumeBtn.textContent = "Resume Game";
+    resumeBtn.style.cssText =
+      "margin-top:16px;padding:12px;background:#ef4444;color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;";
+
+    card.appendChild(resumeBtn);
+    overlay.appendChild(card);
+    modalLayer.appendChild(overlay);
+
+    function close() {
+      if (overlay.parentNode === modalLayer) {
+        modalLayer.removeChild(overlay);
+      }
+    }
+
+    closeIcon.addEventListener("click", close);
+    resumeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close();
+    });
+  }
+
+  window.addEventListener("ui-settings-clicked", openSettings);
+  return { open: openSettings };
 })();
