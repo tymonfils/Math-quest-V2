@@ -4,23 +4,24 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
+    // Allow clicks to pass through empty space to the game and question boxes
     uiLayer.style.position = "fixed";
     uiLayer.style.top = "0";
     uiLayer.style.left = "0";
     uiLayer.style.width = "100%";
     uiLayer.style.zIndex = "9000";
-    uiLayer.style.pointerEvents = "auto";
+    uiLayer.style.pointerEvents = "none";
 
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
     const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
 
-    // Wipe out the old plain text sitting inside ui-layer
-    uiLayer.innerHTML = "";
+    uiLayer.innerHTML = ""; 
 
+    // Header catches clicks strictly on the bar
     const header = document.createElement("header");
-    header.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
+    header.style.cssText = "pointer-events:auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
 
-    // 1. Map Button
+    // Map Button
     const leftDiv = document.createElement("div");
     leftDiv.style.cssText = "display:flex; align-items:center; gap:12px;";
     const mapBtn = document.createElement("button");
@@ -30,7 +31,7 @@
     mapBtn.textContent = "🗺️ Map";
     leftDiv.appendChild(mapBtn);
 
-    // 2. Economy Stats
+    // Economy Stats
     const centerDiv = document.createElement("div");
     centerDiv.style.cssText = "display:flex; align-items:center; gap:24px; font-weight:700; font-size:1rem;";
     
@@ -55,7 +56,7 @@
     centerDiv.appendChild(goldDiv);
     centerDiv.appendChild(streakDiv);
 
-    // 3. Settings Button
+    // Settings Button
     const rightDiv = document.createElement("div");
     rightDiv.style.cssText = "display:flex; align-items:center;";
     const settingsBtn = document.createElement("button");
@@ -65,13 +66,12 @@
     settingsBtn.textContent = "⚙ Settings";
     rightDiv.appendChild(settingsBtn);
 
-    // Assemble the bar
     header.appendChild(leftDiv);
     header.appendChild(centerDiv);
     header.appendChild(rightDiv);
     uiLayer.appendChild(header);
 
-    // Attach listeners directly to the new buttons
+    // Click Handlers
     settingsBtn.onclick = function (e) {
       e.preventDefault();
       e.stopPropagation();
