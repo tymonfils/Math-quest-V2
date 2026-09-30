@@ -108,8 +108,6 @@ const SettingsModal = (function () {
   window.addEventListener("ui-settings-clicked", openSettings);
   return { open: openSettings };
 })();
-2. Verify uibar.js
-Just to be completely sure the click event isn't broken there either, ensure your uibar.js looks like this (again, copy/paste exactly, no swapping):
 
 JavaScript
 // uibar.js - Global Top Navigation Bar
