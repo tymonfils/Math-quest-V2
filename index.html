@@ -16,14 +16,14 @@
   <!-- 1. Base Game Layer -->
   <div id="game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
   
-  <!-- 2. World Map Layer -->
+ <!-- 2. World Map Layer -->
   <div id="world-map-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;"></div>
 
-  <!-- 3. Global UI Layer (Z-index 500 so buttons are always on top) -->
-  <div id="ui-layer" style="position: relative; z-index: 500;"></div>
+  <!-- 3. Global UI Layer -->
+  <div id="ui-layer" style="position: relative; z-index: 9000; pointer-events: auto;"></div>
 
-  <!-- 4. Modal Layer (Z-index 9999 for popups) -->
-  <div id="modal-layer" style="position: relative; z-index: 9999;"></div>
+  <!-- 4. Modal Layer -->
+  <div id="modal-layer" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none;"></div>
 
   <!-- Scripts -->
   <script src="economy.js"></script>
