@@ -13,15 +13,22 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="game-stage">
-    <div id="zone-layer"></div>
-    <div id="particle-canvas-container"></div>
-    <div id="ui-layer"></div>
-  </div>
+  <!-- 1. Base Game Layer (Space School lives here) -->
+  <div id="game-container"></div>
+  
+  <!-- 2. World Map Layer (Sits on top of the game, below the UI) -->
+  <div id="world-map-layer"></div>
 
-  <!-- The conductor: native ES Module -->
-<script src="economy.js"></script>
+  <!-- 3. Global UI Layer (Top bar, gold, streak) -->
+  <div id="ui-layer"></div>
+
+  <!-- 4. Modal Layer (Absolute highest, for Settings/Popups) -->
+  <div id="modal-layer"></div>
+
+  <!-- Scripts -->
+  <script src="economy.js"></script>
   <script src="uibar.js"></script>
+  <script src="settingsmodal.js"></script>
   <script type="module" src="src/main.js"></script>
 </body>
 </html>
