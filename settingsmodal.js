@@ -109,7 +109,6 @@ const SettingsModal = (function () {
   return { open: openSettings };
 })();
 
-JavaScript
 // uibar.js - Global Top Navigation Bar
 (function () {
   function renderUIBar() {
