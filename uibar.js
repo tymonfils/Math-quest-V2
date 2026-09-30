@@ -4,14 +4,23 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
+    // BRUTE FORCE LAYER OVERRIDE:
+    // Force the UI layer to the absolute highest possible layer in a browser
+    uiLayer.style.position = "absolute";
+    uiLayer.style.top = "0";
+    uiLayer.style.left = "0";
+    uiLayer.style.width = "100%";
+    uiLayer.style.zIndex = "2147483647"; // Max 32-bit integer
+    uiLayer.style.pointerEvents = "none"; // Let clicks pass through empty space below the bar
+
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
     const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
 
     uiLayer.innerHTML = ""; 
 
-    // Create Header Container
+    // Create Header Container - pointer-events:auto steals the clicks back from the game engine!
     const header = document.createElement("header");
-    header.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.9); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%; position:relative; z-index:100;";
+    header.style.cssText = "pointer-events:auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.9); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
 
     // Map Button Layer
     const leftDiv = document.createElement("div");
