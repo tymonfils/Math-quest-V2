@@ -4,87 +4,125 @@ const SettingsModal = (function () {
     const modalLayer = document.getElementById("modal-layer");
     if (!modalLayer || document.getElementById("settings-overlay")) return;
 
-    // Create the dark blur background
+    // Dimmed glass backdrop
     const overlay = document.createElement("div");
     overlay.id = "settings-overlay";
     overlay.style.cssText = `
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
+      background: rgba(4, 7, 18, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 10000;
+      animation: settingsFadeIn 0.18s ease-out;
     `;
 
-    // Create the menu box
+    // Main Card
     const modalBox = document.createElement("div");
+    modalBox.id = "settings-dialog-card";
     modalBox.style.cssText = `
-      background: #0f172a;
-      border: 2px solid #64748b;
-      border-radius: 16px;
+      background: linear-gradient(180deg, #111827 0%, #0b0f19 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 20px;
       padding: 24px;
-      width: 90%;
-      max-width: 400px;
+      width: 92%;
+      max-width: 440px;
       color: #f8fafc;
-      font-family: sans-serif;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(56, 189, 248, 0.12);
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
+      max-height: 85vh;
     `;
 
-    // Reusable styles for the rows
-    const headerStyle = "color: #94a3b8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin: 16px 0 8px 4px; letter-spacing: 0.05em;";
-    const rowStyle = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #334155; cursor: pointer;";
-    const tagStyle = "color: #94a3b8; font-size: 0.8rem; background: #0f172a; padding: 4px 8px; border-radius: 6px;";
-
+    // Header styling
+    const sectionTitleStyle = "font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin: 14px 0 6px 4px;";
+    
     modalBox.innerHTML = `
-Menu
+      
+⚙️
+
+Control Deck
+✕
+
 Navigation
 
-🗺️ Fast Travel Go
+🗺️ Fast Travel
 
-🛒 The Shop Go
+OPEN
 
-🎁 Reward Vault Go
+🛒 The Shop
+
+VISIT
+
+🎁 Reward Vault
+
+CLAIM
 
 System
 
-🎵 Music & SFX On
+🎵 Audio & SFX
 
-🔲 Full Screen Toggle
+ENABLED
+
+🔲 Full Screen
+
+TOGGLE
 
 Parent Zone
 
-📊 Report Card View
+📊 Report Card
 
-🧮 Math Difficulty Edit
+VIEW
 
-🔒 Parental Menu Enter
+🔒 Parent Controls
 
-    Close Menu
+PIN
+
+    Resume Game
   
 `;
 
 overlay.appendChild(modalBox);
 modalLayer.appendChild(overlay);
 
-// Close functionality
-document.getElementById("close-settings-btn").addEventListener("click", () => {
-  modalLayer.removeChild(overlay);
-});
-
-overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) {
+// Close logic helper
+function closeModal() {
+  if (overlay.parentNode === modalLayer) {
     modalLayer.removeChild(overlay);
   }
-});
 }
 
+// Attach listeners safely
+const closeBtn = document.getElementById("modal-close-action");
+const closeIcon = document.getElementById("modal-close-icon");
+if (closeBtn) closeBtn.addEventListener("click", closeModal);
+if (closeIcon) closeIcon.addEventListener("click", closeModal);
+
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) closeModal();
+});
+
+// Wire up Fullscreen toggle directly
+const fsRow = document.getElementById("toggle-fullscreen-row");
+if (fsRow) {
+  fsRow.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+}
+}
+
+// Hook into event broadcast from uibar.js
 window.addEventListener("ui-settings-clicked", openSettings);
 
 return { open: openSettings };
