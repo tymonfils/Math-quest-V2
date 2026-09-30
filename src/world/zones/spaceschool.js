@@ -1,6 +1,6 @@
 import { generateProblem } from "../../math/mathEngine.js";
 export function loadSpaceSchool() {
-  const zoneLayer = document.getElementById('zone-layer');
+  const zoneLayer = document.getElementById('game-container');
   
   // Injecting the High-Fidelity 2.5D Space Classroom
   zoneLayer.innerHTML = `
