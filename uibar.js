@@ -4,25 +4,22 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
-    // BRUTE FORCE LAYER OVERRIDE:
-    // Force the UI layer to the absolute highest possible layer in a browser
-    uiLayer.style.position = "absolute";
+    // Clean fixed header container with active pointer events
+    uiLayer.style.position = "fixed";
     uiLayer.style.top = "0";
     uiLayer.style.left = "0";
     uiLayer.style.width = "100%";
-    uiLayer.style.zIndex = "2147483647"; // Max 32-bit integer
-    uiLayer.style.pointerEvents = "none"; // Let clicks pass through empty space below the bar
+    uiLayer.style.zIndex = "9000";
+    uiLayer.style.pointerEvents = "auto";
 
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
     const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
 
     uiLayer.innerHTML = ""; 
 
-    // Create Header Container - pointer-events:auto steals the clicks back from the game engine!
     const header = document.createElement("header");
-    header.style.cssText = "pointer-events:auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.9); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
+    header.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
 
-    // Map Button Layer
     const leftDiv = document.createElement("div");
     leftDiv.style.cssText = "display:flex; align-items:center; gap:12px;";
     const mapBtn = document.createElement("button");
@@ -31,7 +28,6 @@
     mapBtn.textContent = "🗺️ Map";
     leftDiv.appendChild(mapBtn);
 
-    // Stats Layer
     const centerDiv = document.createElement("div");
     centerDiv.style.cssText = "display:flex; align-items:center; gap:24px; font-weight:700; font-size:1rem;";
     
@@ -56,7 +52,6 @@
     centerDiv.appendChild(goldDiv);
     centerDiv.appendChild(streakDiv);
 
-    // Settings Button Layer
     const rightDiv = document.createElement("div");
     rightDiv.style.cssText = "display:flex; align-items:center;";
     const settingsBtn = document.createElement("button");
@@ -65,14 +60,12 @@
     settingsBtn.textContent = "⚙ Settings";
     rightDiv.appendChild(settingsBtn);
 
-    // Stitch together
     header.appendChild(leftDiv);
     header.appendChild(centerDiv);
     header.appendChild(rightDiv);
     uiLayer.appendChild(header);
   }
 
-  // BULLETPROOF EVENT DELEGATION
   document.addEventListener("click", function(e) {
     if (e.target && e.target.id === "ui-settings-btn") {
       window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
