@@ -12,18 +12,18 @@
   
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- 1. Base Game Layer (Space School lives here) -->
-  <div id="game-container"></div>
+<body style="margin: 0; overflow: hidden; background: #0f172a;">
+  <!-- 1. Base Game Layer (Absolute positioned to fill screen behind UI) -->
+  <div id="game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
   
-  <!-- 2. World Map Layer (Sits on top of the game, below the UI) -->
-  <div id="world-map-layer"></div>
+  <!-- 2. World Map Layer -->
+  <div id="world-map-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"></div>
 
-  <!-- 3. Global UI Layer (Top bar, gold, streak) -->
-  <div id="ui-layer"></div>
+  <!-- 3. Global UI Layer (Sits naturally at the top) -->
+  <div id="ui-layer" style="position: relative; z-index: 10;"></div>
 
-  <!-- 4. Modal Layer (Absolute highest, for Settings/Popups) -->
-  <div id="modal-layer"></div>
+  <!-- 4. Modal Layer -->
+  <div id="modal-layer" style="position: relative; z-index: 9999;"></div>
 
   <!-- Scripts -->
   <script src="economy.js"></script>
@@ -31,4 +31,3 @@
   <script src="settingsmodal.js"></script>
   <script type="module" src="src/main.js"></script>
 </body>
-</html>
