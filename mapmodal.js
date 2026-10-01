@@ -10,7 +10,7 @@ const MapModal = (function () {
     overlay.style.cssText =
       "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(4,7,18,0.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:10000;box-sizing:border-box;pointer-events:auto;";
 
-    // Main Card Box (Golden accent for the map)
+    // Main Card Box
     const card = document.createElement("div");
     card.id = "map-card";
     card.style.cssText =
@@ -39,9 +39,7 @@ const MapModal = (function () {
     grid.style.cssText =
       "display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;overflow-y:auto;padding-right:4px;";
 
-    // The 8 Zones Data
-    const zones = [
-     // The 8 Canonical Zones Data
+    // The 8 Canonical Zones Data
     const zones = [
       { name: "Space School", icon: "🚀", color: "#38bdf8", locked: false },
       { name: "Candy Academy", icon: "🍭", color: "#f472b6", locked: true },
@@ -54,21 +52,20 @@ const MapModal = (function () {
     ];
 
     // Generate Buttons
-    zones.forEach(zone => {
+    zones.forEach((zone) => {
       const btn = document.createElement("div");
-      
-      // If locked, dim it and make it unclickable. If unlocked, give it a bright border.
+
       const borderCol = zone.locked ? "#334155" : zone.color;
       const opacity = zone.locked ? "0.5" : "1";
       const cursor = zone.locked ? "not-allowed" : "pointer";
       const bg = zone.locked ? "#1e293b" : "rgba(30, 41, 59, 0.8)";
 
       btn.style.cssText =
-        `background:\({bg};border:2px solid\){borderCol};border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:\({cursor};opacity:\){opacity};transition:transform 0.1s;user-select:none;`;
+        "background:" + bg + ";border:2px solid " + borderCol + ";border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:" + cursor + ";opacity:" + opacity + ";transition:transform 0.1s;user-select:none;";
 
       const icon = document.createElement("div");
       icon.textContent = zone.locked ? "🔒" : zone.icon;
-      icon.style.cssText = "font-size:2rem; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));";
+      icon.style.cssText = "font-size:2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));";
 
       const name = document.createElement("div");
       name.textContent = zone.name;
@@ -79,8 +76,7 @@ const MapModal = (function () {
 
       if (!zone.locked) {
         btn.addEventListener("click", () => {
-          // Right now, this just closes the menu. Later, this will trigger the Zone Loader.
-          console.log(`Traveling to ${zone.name}...`);
+          console.log("Traveling to " + zone.name + "...");
           close();
         });
       }
@@ -106,6 +102,6 @@ const MapModal = (function () {
 
   // Listen for the shout from uibar.js
   window.addEventListener("ui-map-clicked", openMap);
-  
+
   return { open: openMap };
 })();
