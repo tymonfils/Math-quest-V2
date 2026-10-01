@@ -41,14 +41,16 @@ const MapModal = (function () {
 
     // The 8 Zones Data
     const zones = [
+     // The 8 Canonical Zones Data
+    const zones = [
       { name: "Space School", icon: "🚀", color: "#38bdf8", locked: false },
-      { name: "Jungle Ruins", icon: "🌴", color: "#4ade80", locked: true },
-      { name: "Volcano Core", icon: "🌋", color: "#ef4444", locked: true },
-      { name: "Deep Ocean", icon: "🌊", color: "#3b82f6", locked: true },
-      { name: "Desert Tomb", icon: "🏜️️", color: "#f59e0b", locked: true },
-      { name: "Arctic Base", icon: "❄️", color: "#93c5fd", locked: true },
-      { name: "Candy Kingdom", icon: "🍭", color: "#f472b6", locked: true },
-      { name: "Spooky Mansion", icon: "👻", color: "#a855f7", locked: true }
+      { name: "Candy Academy", icon: "🍭", color: "#f472b6", locked: true },
+      { name: "Dino Lab", icon: "🦖", color: "#22c55e", locked: true },
+      { name: "Safari", icon: "🦁", color: "#eab308", locked: true },
+      { name: "Fairy Castle", icon: "🏰", color: "#c084fc", locked: true },
+      { name: "Treasure Cove", icon: "🏴‍☠️", color: "#f97316", locked: true },
+      { name: "Underwater", icon: "🐬", color: "#06b6d4", locked: true },
+      { name: "Fast Lane", icon: "🏎️", color: "#ef4444", locked: true }
     ];
 
     // Generate Buttons
