@@ -1,5 +1,5 @@
 // zones.js - Master Zone Registry
-const WORLD_ZONES = [
+window.WORLD_ZONES = [
   {
     id: "space-school",
     name: "Space School",
@@ -57,7 +57,3 @@ const WORLD_ZONES = [
     bgGradient: "linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%)"
   }
 ];
-
-if (typeof window !== "undefined") {
-  window.WORLD_ZONES = WORLD_ZONES;
-}
