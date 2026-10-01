@@ -6,66 +6,60 @@
 
     uiLayer.innerHTML = ""; 
 
-    // Main top bar container - This splits the left and right sides
+    // 1. The wrapper must take up the full screen width to separate left/right
+    uiLayer.style.position = "fixed";
+    uiLayer.style.top = "0";
+    uiLayer.style.left = "0";
+    uiLayer.style.width = "100%";
+    uiLayer.style.pointerEvents = "none"; // Let clicks pass through to the game
+    uiLayer.style.zIndex = "1000";
+
+    // 2. The flex container that pushes them apart
     const topBar = document.createElement("div");
-    topBar.style.position = "fixed";
-    topBar.style.top = "10px";
-    topBar.style.left = "0";
-    topBar.style.width = "100%";
-    topBar.style.padding = "0 20px";
     topBar.style.display = "flex";
-    topBar.style.justifyContent = "space-between"; // Pushes Gear to the right
+    topBar.style.justifyContent = "space-between";
     topBar.style.alignItems = "center";
-    topBar.style.pointerEvents = "none"; 
-    topBar.style.zIndex = "1000";
+    topBar.style.padding = "15px 20px";
+    topBar.style.width = "100%";
     topBar.style.boxSizing = "border-box";
 
-    // LEFT SIDE: Map Button & Gold
+    // 3. LEFT SIDE: Map Button & Gold
     const leftGroup = document.createElement("div");
     leftGroup.style.display = "flex";
     leftGroup.style.alignItems = "center";
     leftGroup.style.gap = "15px";
-    leftGroup.style.pointerEvents = "auto"; 
+    leftGroup.style.pointerEvents = "auto"; // Restores clickability
 
     const mapBtn = document.createElement("button");
     mapBtn.innerText = "🗺️ Map";
     mapBtn.style.padding = "10px 15px";
     mapBtn.style.fontSize = "18px";
     mapBtn.style.cursor = "pointer";
-    mapBtn.style.borderRadius = "8px";
-    mapBtn.style.border = "2px solid #333";
-    mapBtn.style.backgroundColor = "#fff";
-    mapBtn.style.fontWeight = "bold";
     mapBtn.onclick = () => window.dispatchEvent(new CustomEvent("ui-map-clicked"));
 
     const goldDisplay = document.createElement("div");
-    goldDisplay.id = "gold-display";
     goldDisplay.innerText = "💰 0";
     goldDisplay.style.fontSize = "20px";
     goldDisplay.style.fontWeight = "bold";
     goldDisplay.style.color = "#fbbf24";
-    goldDisplay.style.textShadow = "1px 1px 2px #000";
 
     leftGroup.appendChild(mapBtn);
     leftGroup.appendChild(goldDisplay);
 
-    // RIGHT SIDE: Settings Gear
+    // 4. RIGHT SIDE: Settings Gear
     const rightGroup = document.createElement("div");
-    rightGroup.style.pointerEvents = "auto"; 
+    rightGroup.style.pointerEvents = "auto"; // Restores clickability
 
     const settingsBtn = document.createElement("button");
-    settingsBtn.innerHTML = "⚙️";
+    settingsBtn.innerText = "⚙️";
     settingsBtn.style.padding = "10px 15px";
     settingsBtn.style.fontSize = "20px";
     settingsBtn.style.cursor = "pointer";
-    settingsBtn.style.borderRadius = "8px";
-    settingsBtn.style.border = "2px solid #333";
-    settingsBtn.style.backgroundColor = "#fff";
     settingsBtn.onclick = () => window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
 
     rightGroup.appendChild(settingsBtn);
 
-    // Put it all together
+    // Assemble
     topBar.appendChild(leftGroup);
     topBar.appendChild(rightGroup);
     uiLayer.appendChild(topBar);
