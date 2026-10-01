@@ -4,46 +4,45 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
-    // 1. RE-ADDING THE MISSING SCAFFOLDING
-    // This forces the bar across the whole screen and allows clicks to work
-    uiLayer.style.position = "fixed";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.pointerEvents = "none";
-    uiLayer.style.zIndex = "1000";
-
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
 
-    // 2. The sleek styling (with pointer-events: auto added so they click!)
-    const btnStyle = "background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #f8fafc; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-family: 'Nunito', sans-serif; pointer-events: auto;";
-    
-    const goldStyle = "background: rgba(15, 23, 42, 0.9); border: 2px solid #fbbf24; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #fbbf24; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; pointer-events: auto;";
-
     uiLayer.innerHTML = `
-🗺️ Map
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; box-sizing: border-box; pointer-events: none;">
+        
+        <!-- LEFT SIDE: Map & Gold -->
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <button id="ui-map-btn" style="pointer-events: auto; padding: 10px 20px; background: #1e293b; color: #f8fafc; border: none; border-radius: 8px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+            🗺️ Fast Travel
+          </button>
+          
+          <div style="pointer-events: auto; padding: 10px 20px; background: rgba(15, 23, 42, 0.9); border: 1px solid #fbbf24; border-radius: 8px; color: #fbbf24; font-weight: 800; font-family: 'Nunito', sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+            🪙 <span id="ui-gold-display">$<initialGold></span>
+          </div>
+        </div>
 
-🪙 ${initialGold}
+        <!-- RIGHT SIDE: Settings -->
+        <button id="ui-settings-btn" style="pointer-events: auto; padding: 10px 16px; background: #1e293b; color: #f8fafc; border: none; border-radius: 8px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+          ⚙️
+        </button>
 
-⚙️
+      </div>
+      `;
 
-`;
+    // Attach Event Listeners
+    const mapBtn = document.getElementById("ui-map-btn");
+    if (mapBtn) {
+      mapBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-map-clicked")));
+    }
 
-// Reattach Event Listeners
-const mapBtn = document.getElementById("ui-map-btn");
-if (mapBtn) {
-  mapBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-map-clicked")));
-}
+    const settingsBtn = document.getElementById("ui-settings-btn");
+    if (settingsBtn) {
+      settingsBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-settings-clicked")));
+    }
+  }
 
-const settingsBtn = document.getElementById("ui-settings-btn");
-if (settingsBtn) {
-  settingsBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-settings-clicked")));
-}
-}
-
-if (document.readyState === "loading") {
-document.addEventListener("DOMContentLoaded", renderUIBar);
-} else {
-renderUIBar();
-}
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderUIBar);
+  } else {
+    renderUIBar();
+  }
 })();
