@@ -4,20 +4,28 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
+    // 1. RE-ADDING THE MISSING SCAFFOLDING
+    // This forces the bar across the whole screen and allows clicks to work
+    uiLayer.style.position = "fixed";
+    uiLayer.style.top = "0";
+    uiLayer.style.left = "0";
+    uiLayer.style.width = "100%";
+    uiLayer.style.pointerEvents = "none";
+    uiLayer.style.zIndex = "1000";
+
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
 
-    // Sleek, high-end UI styling for buttons
-    const btnStyle = "background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #f8fafc; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-family: 'Nunito', sans-serif;";
+    // 2. The sleek styling (with pointer-events: auto added so they click!)
+    const btnStyle = "background: #1e293b; border: 2px solid #334155; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #f8fafc; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); font-family: 'Nunito', sans-serif; pointer-events: auto;";
     
-    // Custom glowing styling for the gold display
-    const goldStyle = "background: rgba(15, 23, 42, 0.9); border: 2px solid #fbbf24; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #fbbf24; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif;";
+    const goldStyle = "background: rgba(15, 23, 42, 0.9); border: 2px solid #fbbf24; border-radius: 12px; padding: 10px 18px; font-size: 1rem; font-weight: 800; color: #fbbf24; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; pointer-events: auto;";
 
     uiLayer.innerHTML = `
 🗺️ Map
 
 🪙 ${initialGold}
 
-⚙
+⚙️
 
 `;
 
