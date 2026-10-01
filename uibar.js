@@ -4,90 +4,75 @@
     const uiLayer = document.getElementById("ui-layer");
     if (!uiLayer) return;
 
-    // Allow clicks to pass through empty space to the game and question boxes
-    uiLayer.style.position = "fixed";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.zIndex = "9000";
-    uiLayer.style.pointerEvents = "none";
-
-    const initialGold = window.Economy ? window.Economy.getGold() : 0;
-    const initialStreak = window.Economy ? window.Economy.getStreak() : 0;
-
     uiLayer.innerHTML = ""; 
 
-    // Header catches clicks strictly on the bar
-    const header = document.createElement("header");
-    header.style.cssText = "pointer-events:auto; display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:rgba(15,23,42,0.95); backdrop-filter:blur(8px); border-bottom:2px solid #334155; color:#f8fafc; font-family:sans-serif; box-sizing:border-box; width:100%;";
+    // Main top bar container - This splits the left and right sides
+    const topBar = document.createElement("div");
+    topBar.style.position = "fixed";
+    topBar.style.top = "10px";
+    topBar.style.left = "0";
+    topBar.style.width = "100%";
+    topBar.style.padding = "0 20px";
+    topBar.style.display = "flex";
+    topBar.style.justifyContent = "space-between"; // Pushes Gear to the right
+    topBar.style.alignItems = "center";
+    topBar.style.pointerEvents = "none"; 
+    topBar.style.zIndex = "1000";
+    topBar.style.boxSizing = "border-box";
 
-    // Map Button
-    const leftDiv = document.createElement("div");
-    leftDiv.style.cssText = "display:flex; align-items:center; gap:12px;";
+    // LEFT SIDE: Map Button & Gold
+    const leftGroup = document.createElement("div");
+    leftGroup.style.display = "flex";
+    leftGroup.style.alignItems = "center";
+    leftGroup.style.gap = "15px";
+    leftGroup.style.pointerEvents = "auto"; 
+
     const mapBtn = document.createElement("button");
-    mapBtn.id = "ui-map-btn";
-    mapBtn.type = "button";
-    mapBtn.style.cssText = "background:#1e293b; color:#38bdf8; border:1px solid #38bdf8; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.9rem;";
-    mapBtn.textContent = "🗺️ Map";
-    leftDiv.appendChild(mapBtn);
+    mapBtn.innerText = "🗺️ Map";
+    mapBtn.style.padding = "10px 15px";
+    mapBtn.style.fontSize = "18px";
+    mapBtn.style.cursor = "pointer";
+    mapBtn.style.borderRadius = "8px";
+    mapBtn.style.border = "2px solid #333";
+    mapBtn.style.backgroundColor = "#fff";
+    mapBtn.style.fontWeight = "bold";
+    mapBtn.onclick = () => window.dispatchEvent(new CustomEvent("ui-map-clicked"));
 
-    // Economy Stats
-    const centerDiv = document.createElement("div");
-    centerDiv.style.cssText = "display:flex; align-items:center; gap:24px; font-weight:700; font-size:1rem;";
-    
-    const goldDiv = document.createElement("div");
-    goldDiv.style.cssText = "display:flex; align-items:center; gap:6px;";
-    goldDiv.textContent = "🪙 Gold: ";
-    const goldSpan = document.createElement("span");
-    goldSpan.id = "ui-gold-display";
-    goldSpan.style.color = "#fbbf24";
-    goldSpan.textContent = initialGold;
-    goldDiv.appendChild(goldSpan);
+    const goldDisplay = document.createElement("div");
+    goldDisplay.id = "gold-display";
+    goldDisplay.innerText = "💰 0";
+    goldDisplay.style.fontSize = "20px";
+    goldDisplay.style.fontWeight = "bold";
+    goldDisplay.style.color = "#fbbf24";
+    goldDisplay.style.textShadow = "1px 1px 2px #000";
 
-    const streakDiv = document.createElement("div");
-    streakDiv.style.cssText = "display:flex; align-items:center; gap:6px;";
-    streakDiv.textContent = "🔥 Streak: ";
-    const streakSpan = document.createElement("span");
-    streakSpan.id = "ui-streak-display";
-    streakSpan.style.color = "#f97316";
-    streakSpan.textContent = initialStreak;
-    streakDiv.appendChild(streakSpan);
+    leftGroup.appendChild(mapBtn);
+    leftGroup.appendChild(goldDisplay);
 
-    centerDiv.appendChild(goldDiv);
-    centerDiv.appendChild(streakDiv);
+    // RIGHT SIDE: Settings Gear
+    const rightGroup = document.createElement("div");
+    rightGroup.style.pointerEvents = "auto"; 
 
-    // Settings Button
-    const rightDiv = document.createElement("div");
-    rightDiv.style.cssText = "display:flex; align-items:center;";
     const settingsBtn = document.createElement("button");
-    settingsBtn.id = "ui-settings-btn";
-    settingsBtn.type = "button";
-    settingsBtn.style.cssText = "background:#1e293b; color:#f8fafc; border:1px solid #64748b; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.9rem;";
-    settingsBtn.textContent = "⚙ Settings";
-    rightDiv.appendChild(settingsBtn);
+    settingsBtn.innerHTML = "⚙️";
+    settingsBtn.style.padding = "10px 15px";
+    settingsBtn.style.fontSize = "20px";
+    settingsBtn.style.cursor = "pointer";
+    settingsBtn.style.borderRadius = "8px";
+    settingsBtn.style.border = "2px solid #333";
+    settingsBtn.style.backgroundColor = "#fff";
+    settingsBtn.onclick = () => window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
 
-    header.appendChild(leftDiv);
-    header.appendChild(centerDiv);
-    header.appendChild(rightDiv);
-    uiLayer.appendChild(header);
+    rightGroup.appendChild(settingsBtn);
 
-    // Click Handlers
-    settingsBtn.onclick = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      window.dispatchEvent(new CustomEvent("ui-settings-clicked"));
-    };
-
-    mapBtn.onclick = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      window.dispatchEvent(new CustomEvent("ui-map-clicked"));
-    };
+    // Put it all together
+    topBar.appendChild(leftGroup);
+    topBar.appendChild(rightGroup);
+    uiLayer.appendChild(topBar);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", renderUIBar);
-  } else {
+  document.addEventListener("DOMContentLoaded", renderUIBar);
+  if (document.readyState === "complete" || document.readyState === "interactive") {
     renderUIBar();
   }
 })();
