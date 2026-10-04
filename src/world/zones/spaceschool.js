@@ -188,10 +188,10 @@ export function loadSpaceSchool() {
           </div>
 
           <!-- ANSWER INPUT + SUBMIT BUTTON -->
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <input id="math-answer-input" type="number" placeholder="?" style="width: 70px; height: 50px; text-align: center; font-size: 1.8rem; font-weight: bold; color: #f8fafc; background: #0f172a; border: 2px solid #38bdf8; border-radius: 10px; outline: none; box-shadow: 0 0 12px rgba(56,189,248,0.3);" />
-            <button id="math-submit-btn" style="height: 50px; padding: 0 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #0f172a; font-weight: 800; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(56,189,248,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Launch</button>
-          </div>
+          <div style="display: flex; align-items: center; gap: 8px; position: relative; z-index: 9999; pointer-events: auto;">
+<input id="math-answer-input" type="number" placeholder="?" style="pointer-events: auto; width: 70px; height: 50px; text-align: center; font-size: 1.8rem; font-weight: bold; color: #f8fafc; background: #0f172a; border: 2px solid #38bdf8; border-radius: 10px; outline: none; box-shadow: 0 0 12px rgba(56,189,248,0.3);" />
+<button id="math-submit-btn" style="pointer-events: auto; height: 50px; padding: 0 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #0f172a; font-weight: 800; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(56,189,248,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Launch</button>
+</div>
 
         </div>
 <style>
