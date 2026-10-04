@@ -1,4 +1,4 @@
-import { generateProblem } from "../../math/mathEngine.js";
+import { getCurrentProblem, submitAnswer } from "../../math/mathEngine.js";
 export function loadSpaceSchool() {
   const zoneLayer = document.getElementById('game-container');
   
@@ -217,20 +217,19 @@ export function loadSpaceSchool() {
     </div>
   `;
 }
-let currentProblem = null;
-
 export function loadNewEquation() {
-  currentProblem = generateProblem();
+  const problem = getCurrentProblem();
   const elNum1 = document.getElementById("math-num1");
   const elNum2 = document.getElementById("math-num2");
   const elOp = document.getElementById("math-op");
 
   if (elNum1 && elNum2 && elOp) {
-    elNum1.textContent = currentProblem.num1;
-    elNum2.textContent = currentProblem.num2;
-    elOp.textContent = currentProblem.operation;
+    elNum1.textContent = problem.num1;
+    elNum2.textContent = problem.num2;
+    elOp.textContent = problem.operation;
   }
 }
+
 function setupMathControls() {
   const btn = document.getElementById("math-submit-btn");
   const input = document.getElementById("math-answer-input");
@@ -245,17 +244,11 @@ function setupMathControls() {
 
   setStatus("SYSTEM: READY");
 
-  function checkAnswer() {
-    const userVal = parseInt(input.value.trim(), 10);
-    if (isNaN(userVal)) return;
+  function handleCheck() {
+    const result = submitAnswer(input.value.trim());
+    if (result.ignored) return;
 
-    if (currentProblem && userVal === currentProblem.answer) {
-      // 1. Notify Economy (uibar updates automatically via event)
-      if (window.Economy) {
-        Economy.awardCorrectAnswer();
-      }
-
-      // 2. Blast off rocket
+    if (result.success) {
       if (rocket) {
         rocket.classList.remove("rocket-launching");
         void rocket.offsetWidth;
@@ -265,7 +258,6 @@ function setupMathControls() {
         }, 1400);
       }
 
-      // 3. UI feedback & queue next question
       setStatus("LAUNCH SUCCESS");
       input.style.borderColor = "#10b981";
       setTimeout(() => {
@@ -274,14 +266,7 @@ function setupMathControls() {
         setStatus("SYSTEM: READY");
         loadNewEquation();
       }, 900);
-
     } else {
-      // 1. Penalize via Economy
-      if (window.Economy) {
-        Economy.penalizeWrongAnswer();
-      }
-
-      // 2. Error feedback
       setStatus("TRAJECTORY ERROR");
       input.style.borderColor = "#ef4444";
       setTimeout(() => {
@@ -292,9 +277,9 @@ function setupMathControls() {
     }
   }
 
-  btn.addEventListener("click", checkAnswer);
+  btn.addEventListener("click", handleCheck);
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") checkAnswer();
+    if (e.key === "Enter") handleCheck();
   });
 }
 
