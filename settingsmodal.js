@@ -1,4 +1,4 @@
-To make switching grades or topics update the whiteboard instantly the moment you tap a button inside Settings, we just need to update settingsmodal.js and add a 1-line listener to src/world/zones/spaceschool.js.Step 1: Update settingsmodal.jsThis adds two clean, interactive control decks right at the top of your ⚙️ Control Deck:Grade Level (K, 1, 2, 3, 4, 5): Highlights the active grade in glowing cyan and saves your pick immediately.Math Focus (50/50 Mix, + Add, - Sub, × Mult, ÷ Div): Lets you keep the automatic mix or lock into a specific operation whenever Jemma wants to practice just one skill.Copy and paste this into settingsmodal.js:   JavaScript// settingsmodal.js - Clean DOM Modular Settings Deck with Live Grade & Topic Controls
+// settingsmodal.js - Clean DOM Modular Settings Deck with Live Grade & Topic Controls
 const SettingsModal = (function () {
   function openSettings() {
     const modalLayer = document.getElementById("modal-layer");
