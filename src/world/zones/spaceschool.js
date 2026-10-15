@@ -1,4 +1,5 @@
 import { getCurrentProblem, submitAnswer } from "../../math/mathEngine.js";
+
 export function loadSpaceSchool() {
   const zoneLayer = document.getElementById('game-container');
   
@@ -25,7 +26,8 @@ export function loadSpaceSchool() {
         
         <!-- NEBULA BACKDROP -->
         <div style="position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at 65% 35%, rgba(30, 58, 138, 0.45) 0%, transparent 65%); opacity: 0.6;"></div>
-       <!-- SHOOTING STARS SYSTEM -->
+        
+        <!-- SHOOTING STARS SYSTEM -->
         <div style="position: absolute; width: 120px; height: 2px; top: 12%; left: -100px; background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), #ffffff); transform: rotate(22deg); border-radius: 50%; filter: drop-shadow(0 0 4px #38bdf8); animation: shootStar1 4.5s ease-in infinite;"></div>
         <div style="position: absolute; width: 160px; height: 2px; top: 38%; left: -120px; background: linear-gradient(90deg, transparent, rgba(244, 114, 182, 0.4), #ffffff); transform: rotate(18deg); border-radius: 50%; filter: drop-shadow(0 0 5px #f472b6); animation: shootStar2 6s ease-in 1.5s infinite;"></div>
         <div style="position: absolute; width: 100px; height: 1.5px; top: 65%; left: -80px; background: linear-gradient(90deg, transparent, rgba(253, 224, 71, 0.4), #ffffff); transform: rotate(25deg); border-radius: 50%; filter: drop-shadow(0 0 4px #fde047); animation: shootStar3 3.8s ease-in 2.8s infinite;"></div>
@@ -60,11 +62,12 @@ export function loadSpaceSchool() {
             45% { transform: translate(650px, 240px) rotate(20deg); opacity: 0; }
             100% { transform: translate(650px, 240px) rotate(20deg); opacity: 0; }
           } 
-      </style>
+        </style>
 
         <!-- WINDOW BEVEL / FRAME -->
         <div style="position: absolute; width: 100%; height: 100%; border: 18px solid #1e293b; box-shadow: inset 0 0 25px rgba(0,0,0,0.95); pointer-events: none;"></div>
       </div>
+
       <!-- ============================================== -->
       <!-- 3. RIGHT: BOARD & CONSOLE -->
       <div style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
@@ -79,9 +82,9 @@ export function loadSpaceSchool() {
           <div id="equation-container" style="z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
             <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: monospace; font-size: 3.5rem; font-weight: bold; color: #f8fafc; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);">
               <div id="math-num1">54</div>
-<div style="display: flex; align-items: center; gap: 15px;">
-<span id="math-op" style="color: #38bdf8; font-size: 2.8rem;">-</span>
-<span id="math-num2">28</span>
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <span id="math-op" style="color: #38bdf8; font-size: 2.8rem;">-</span>
+                <span id="math-num2">28</span>
               </div>
               <div style="width: 100%; height: 4px; background: #38bdf8; margin: 8px 0; box-shadow: 0 0 10px #38bdf8;"></div>
               <div style="color: #38bdf8; letter-spacing: 0.2em;">??</div>
@@ -154,7 +157,8 @@ export function loadSpaceSchool() {
             <span style="font-size: 0.75rem; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px;">Propulsion</span>
           </div>
         </div>
-       <!-- 3B. CONSOLE INTERFACE + ROBOT + INPUT -->
+
+        <!-- 3B. CONSOLE INTERFACE + ROBOT + INPUT -->
         <div style="height: 125px; border-radius: 16px; background: #1e293b; border: 3px solid #475569; box-shadow: 0 6px 20px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; box-sizing: border-box; gap: 12px;">
           
           <!-- Console Readouts -->
@@ -178,112 +182,4 @@ export function loadSpaceSchool() {
             <svg style="width: 65px; height: 85px;" viewBox="0 0 100 120">
               <rect x="25" y="10" width="50" height="40" rx="10" fill="#e2e8f0" stroke="#334155" stroke-width="3" />
               <rect x="35" y="22" width="12" height="15" rx="3" fill="#0f172a" />
-              <rect x="53" y="22" width="12" height="15" rx="3" fill="#0f172a" />
-              <rect x="38" y="25" width="6" height="9" rx="2" fill="#38bdf8" />
-              <rect x="56" y="25" width="6" height="9" rx="2" fill="#38bdf8" />
-              <path d="M20,60 L80,60 L70,100 L30,100 Z" fill="#cbd5e1" stroke="#334155" stroke-width="3" />
-              <circle cx="50" cy="110" r="10" fill="#38bdf8" opacity="0.8" style="animation: flickerRepulsor 0.2s infinite alternate;" />
-              <circle cx="50" cy="110" r="5" fill="#e0f2fe" />
-            </svg>
-          </div>
-
-          <!-- ANSWER INPUT + SUBMIT BUTTON -->
-          <div style="display: flex; align-items: center; gap: 8px; position: relative; z-index: 9999; pointer-events: auto;">
-<input id="math-answer-input" type="number" placeholder="?" style="pointer-events: auto; width: 70px; height: 50px; text-align: center; font-size: 1.8rem; font-weight: bold; color: #f8fafc; background: #0f172a; border: 2px solid #38bdf8; border-radius: 10px; outline: none; box-shadow: 0 0 12px rgba(56,189,248,0.3);" />
-<button id="math-submit-btn" style="pointer-events: auto; height: 50px; padding: 0 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #0f172a; font-weight: 800; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(56,189,248,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Launch</button>
-</div>
-
-        </div>
-<style>
-          @keyframes hoverTeacher {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-7px); }
-          }
-          @keyframes flickerRepulsor {
-            0% { opacity: 0.7; filter: blur(2px); }
-            100% { opacity: 1; filter: blur(4px); }
-          }
-       @keyframes rocketLaunch {
-  0% { transform: translateY(0); }
-  45% { transform: translateY(-700px); opacity: 0; }
-  50% { transform: translateY(700px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-.rocket-launching {
-  animation: rocketLaunch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-}
-        </style>
-      </div>
-    </div>
-  `;
-}
-export function loadNewEquation() {
-  const problem = getCurrentProblem();
-  const elNum1 = document.getElementById("math-num1");
-  const elNum2 = document.getElementById("math-num2");
-  const elOp = document.getElementById("math-op");
-
-  if (elNum1 && elNum2 && elOp) {
-    elNum1.textContent = problem.num1;
-    elNum2.textContent = problem.num2;
-    elOp.textContent = problem.operation;
-  }
-}
-
-function setupMathControls() {
-  const btn = document.getElementById("math-submit-btn");
-  const input = document.getElementById("math-answer-input");
-  const rocket = document.querySelector(".vfx-core")?.closest("svg") || document.querySelector(".vfx-ring")?.closest("svg");
-  const statusSpan = input?.closest("div[style*='125px']")?.querySelector("span");
-
-  if (!btn || !input) return;
-
-  function setStatus(text) {
-    if (statusSpan) statusSpan.textContent = text;
-  }
-
-  setStatus("SYSTEM: READY");
-
-  function handleCheck() {
-    const result = submitAnswer(input.value.trim());
-    if (result.ignored) return;
-
-    if (result.success) {
-      if (rocket) {
-        rocket.classList.remove("rocket-launching");
-        void rocket.offsetWidth;
-        rocket.classList.add("rocket-launching");
-        setTimeout(() => {
-          rocket.classList.remove("rocket-launching");
-        }, 1400);
-      }
-
-      setStatus("LAUNCH SUCCESS");
-      input.style.borderColor = "#10b981";
-      setTimeout(() => {
-        input.style.borderColor = "#38bdf8";
-        input.value = "";
-        setStatus("SYSTEM: READY");
-        loadNewEquation();
-      }, 900);
-    } else {
-      setStatus("TRAJECTORY ERROR");
-      input.style.borderColor = "#ef4444";
-      setTimeout(() => {
-        input.style.borderColor = "#38bdf8";
-        input.value = "";
-        setStatus("SYSTEM: READY");
-      }, 900);
-    }
-  }
-
-  btn.addEventListener("click", handleCheck);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") handleCheck();
-  });
-}
-
-setTimeout(() => {
-  loadNewEquation();
-  setupMathControls();
-}, 100);
+              <rect x="53"
