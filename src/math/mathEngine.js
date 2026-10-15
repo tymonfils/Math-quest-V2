@@ -216,6 +216,18 @@ export function submitAnswer(userVal) {
   } else {
     if (window.Economy) {
       window.Economy.penalizeWrongAnswer();
+      // Automatically generate a fresh problem whenever Grade or Math Mode changes in Settings
+window.addEventListener("math-settings-changed", () => {
+  generateProblem();
+  const elNum1 = document.getElementById("math-num1");
+  const elNum2 = document.getElementById("math-num2");
+  const elOp = document.getElementById("math-op");
+  if (elNum1 && elNum2 && elOp && activeProblem) {
+    elNum1.textContent = activeProblem.num1;
+    elNum2.textContent = activeProblem.num2;
+    elOp.textContent = activeProblem.operation;
+  }
+});
     }
     return { success: false, answer: activeProblem.answer };
   }
