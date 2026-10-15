@@ -1,4 +1,4 @@
-// src/world/zones/candyacademy.js - Full-Screen Outdoor Candy Kingdom Biome (Grounded & Baked-In Cracker Edition)
+// src/world/zones/candyacademy.js - Full-Screen Outdoor Candy Kingdom Biome (Glossy Swirled Peppermint Lollipops Edition)
 import { getCurrentProblem, submitAnswer } from "../../math/mathEngine.js";
 
 export function loadCandyAcademy() {
@@ -83,11 +83,11 @@ export function loadCandyAcademy() {
     }
     .pinwheel-head-spin {
       transform-origin: 0px 0px;
-      animation: spinPinwheel 9s linear infinite;
+      animation: spinPinwheel 10s linear infinite;
     }
     .pinwheel-head-spin-fast {
       transform-origin: 0px 0px;
-      animation: spinPinwheel 6.5s linear infinite;
+      animation: spinPinwheel 7.5s linear infinite;
     }
     .gummy-mascot-idle {
       transform-origin: center bottom;
@@ -127,7 +127,7 @@ export function loadCandyAcademy() {
   zoneLayer.innerHTML = `
     <div id="candy-world-root" style="position: relative; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(180deg, #ffafcc 0%, #ffc8dd 26%, #ffdfef 50%, #f472b6 100%); font-family: 'Nunito', 'Segoe UI', sans-serif; user-select: none;">
 
-      <!-- 1. FULL-SCREEN SCENIC SVG LANDSCAPE (SKY, PINWHEELS, FROSTING HILLS & CHOCOLATE RIVER) -->
+      <!-- 1. FULL-SCREEN SCENIC SVG LANDSCAPE (SKY, CANDY-CANE PINWHEELS, FROSTING HILLS & CHOCOLATE RIVER) -->
       <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;">
         <defs>
           <radialGradient id="sugarSunGlow" cx="72%" cy="20%" r="45%">
@@ -178,6 +178,40 @@ export function loadCandyAcademy() {
             <stop offset="50%" stop-color="#ffffff" />
             <stop offset="100%" stop-color="#cbd5e1" />
           </linearGradient>
+
+          <!-- Diagonal Red & White Candy-Cane Striped Pole Pattern -->
+          <pattern id="candyCanePoleRed" width="18" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+            <rect width="18" height="24" fill="#ffffff" />
+            <rect width="9" height="24" fill="#e11d48" />
+            <rect width="2" height="24" fill="#fda4af" opacity="0.7" />
+          </pattern>
+
+          <!-- Diagonal Pink & Mint Candy-Cane Striped Pole Pattern -->
+          <pattern id="candyCanePolePink" width="18" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
+            <rect width="18" height="24" fill="#ffffff" />
+            <rect width="8" height="24" fill="#ec4899" />
+            <rect x="11" width="4" height="24" fill="#34d399" />
+          </pattern>
+
+          <!-- 3D Sugar-Glaze Inner Depth Shading for Peppermint Discs -->
+          <radialGradient id="hardCandyGloss" cx="35%" cy="30%" r="68%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55" />
+            <stop offset="35%" stop-color="#ffffff" stop-opacity="0.08" />
+            <stop offset="78%" stop-color="#881337" stop-opacity="0.08" />
+            <stop offset="100%" stop-color="#4c0519" stop-opacity="0.38" />
+          </radialGradient>
+
+          <radialGradient id="gumdropCenterGold" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fef9c3" />
+            <stop offset="45%" stop-color="#facc15" />
+            <stop offset="100%" stop-color="#b45309" />
+          </radialGradient>
+
+          <radialGradient id="gumdropCenterMint" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#d1fae5" />
+            <stop offset="45%" stop-color="#10b981" />
+            <stop offset="100%" stop-color="#065f46" />
+          </radialGradient>
         </defs>
 
         <!-- Warm Golden-Sugar Sunburst -->
@@ -186,43 +220,113 @@ export function loadCandyAcademy() {
         <!-- Distant Pastel Sugar Mountains -->
         <path d="M-60 470 Q 180 310 430 420 T 940 380 T 1500 420 L 1500 900 L -60 900 Z" fill="#fbcfe8" opacity="0.65" />
 
-        <!-- PEPPERMINT PINWHEEL #1 (Far Left Hilltop) -->
-        <g transform="translate(185, 360)">
-          <rect x="-5" y="0" width="10" height="190" rx="4" fill="url(#pinwheelStick)" stroke="#cbd5e1" stroke-width="1.5" />
+        <!-- ========================================================================= -->
+        <!-- PEPPERMINT CANDY PINWHEEL #1 (Far Left Hilltop - Classic Starlight Mint) -->
+        <!-- ========================================================================= -->
+        <g transform="translate(185, 350)" filter="drop-shadow(0 10px 16px rgba(136, 19, 55, 0.32))">
+          <!-- Candy-Cane Striped Stick + Gloss Highlight -->
+          <rect x="-7" y="0" width="14" height="205" rx="6" fill="url(#candyCanePoleRed)" stroke="#9f1239" stroke-width="2" />
+          <rect x="-3" y="0" width="4" height="205" fill="#ffffff" opacity="0.45" />
+
+          <!-- Spinning 8-Swirl Starlight Peppermint Candy Disc -->
           <g class="pinwheel-head-spin">
-            <circle cx="0" cy="0" r="64" fill="#ffffff" stroke="#f43f5e" stroke-width="6" filter="drop-shadow(0 6px 12px rgba(157,23,77,0.25))" />
-            <path d="M0 0 C25 -52 58 -32 62 0 Z" fill="#f43f5e" />
-            <path d="M0 0 C52 25 32 58 0 62 Z" fill="#ec4899" />
-            <path d="M0 0 C-25 52 -58 32 -62 0 Z" fill="#f43f5e" />
-            <path d="M0 0 C-52 -25 -32 -58 0 -62 Z" fill="#ec4899" />
-            <circle cx="0" cy="0" r="13" fill="#fde047" stroke="#ffffff" stroke-width="4" />
+            <!-- Scalloped Sugar Outer Rim -->
+            <circle cx="0" cy="0" r="72" fill="#fff1f2" stroke="#be123c" stroke-width="4" />
+            <circle cx="0" cy="0" r="67" fill="#ffffff" />
+
+            <!-- 6 Curved Classic Red Peppermint Swirl Stripes + Pinstripes -->
+            <g>
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" />
+
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" transform="rotate(60)" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" transform="rotate(60)" />
+
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" transform="rotate(120)" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" transform="rotate(120)" />
+
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" transform="rotate(180)" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" transform="rotate(180)" />
+
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" transform="rotate(240)" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" transform="rotate(240)" />
+
+              <path d="M 0 0 C 22 -28, 52 -32, 67 0 C 56 16, 30 10, 0 0 Z" fill="#e11d48" transform="rotate(300)" />
+              <path d="M 0 0 C 26 -14, 48 -12, 65 8" fill="none" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" transform="rotate(300)" />
+            </g>
+
+            <!-- Inner Spiral Candy Ring -->
+            <circle cx="0" cy="0" r="67" fill="none" stroke="#fda4af" stroke-width="3" stroke-dasharray="10 8" />
           </g>
+
+          <!-- Stationary 3D Glassy Sugar Glaze Reflection Overlay + Center Gumdrop Jewel -->
+          <circle cx="0" cy="0" r="67" fill="url(#hardCandyGloss)" />
+          <path d="M -46 -32 A 54 54 0 0 1 42 -36" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+          <circle cx="-48" cy="-16" r="4" fill="#ffffff" opacity="0.7" />
+          <circle cx="0" cy="0" r="16" fill="url(#gumdropCenterMint)" stroke="#ffffff" stroke-width="3.5" />
+          <circle cx="-5" cy="-5" r="4.5" fill="#ffffff" opacity="0.8" />
         </g>
 
-        <!-- PEPPERMINT PINWHEEL #2 (Right Horizon Giant) -->
-        <g transform="translate(1225, 330)">
-          <rect x="-6" y="0" width="12" height="240" rx="5" fill="url(#pinwheelStick)" stroke="#cbd5e1" stroke-width="1.5" />
+        <!-- ========================================================================= -->
+        <!-- PEPPERMINT CANDY PINWHEEL #2 (Right Horizon Giant - Rainbow Whirly Pop)   -->
+        <!-- ========================================================================= -->
+        <g transform="translate(1225, 320)" filter="drop-shadow(0 12px 20px rgba(136, 19, 55, 0.35))">
+          <!-- Candy-Cane Striped Stick + Cellophane Bow Tie at Base of Candy -->
+          <rect x="-8" y="0" width="16" height="250" rx="7" fill="url(#candyCanePolePink)" stroke="#9d174d" stroke-width="2.2" />
+          <rect x="-3" y="0" width="4.5" height="250" fill="#ffffff" opacity="0.45" />
+
+          <!-- Spinning 8-Wedge Rainbow Lollipop Pinwheel Disc -->
           <g class="pinwheel-head-spin-fast">
-            <circle cx="0" cy="0" r="80" fill="#ffffff" stroke="#ec4899" stroke-width="7" filter="drop-shadow(0 8px 16px rgba(157,23,77,0.3))" />
-            <path d="M0 0 C30 -66 74 -40 78 0 Z" fill="#ec4899" />
-            <path d="M0 0 C66 30 40 74 0 78 Z" fill="#34d399" />
-            <path d="M0 0 C-30 66 -74 40 -78 0 Z" fill="#ec4899" />
-            <path d="M0 0 C-66 -30 -40 -74 0 -78 Z" fill="#34d399" />
-            <circle cx="0" cy="0" r="16" fill="#fde047" stroke="#ffffff" stroke-width="4" />
+            <circle cx="0" cy="0" r="88" fill="#ffffff" stroke="#db2777" stroke-width="5" />
+            <circle cx="0" cy="0" r="82" fill="#fffbeb" />
+
+            <!-- 8 Alternating Curved Rainbow Candy Swirl Wedges (Pink, Mint, Lemon, Berry) -->
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#ec4899" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#34d399" transform="rotate(45)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#facc15" transform="rotate(90)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#a855f7" transform="rotate(135)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#ec4899" transform="rotate(180)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#34d399" transform="rotate(225)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#facc15" transform="rotate(270)" />
+            <path d="M 0 0 C 28 -36, 66 -40, 82 0 C 68 20, 36 12, 0 0 Z" fill="#a855f7" transform="rotate(315)" />
+
+            <!-- White Piped Sugar Swirl Dividers -->
+            <path d="M 0 0 Q 38 -24 80 0" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+            <path d="M 0 0 Q 38 -24 80 0" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" transform="rotate(90)" />
+            <path d="M 0 0 Q 38 -24 80 0" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" transform="rotate(180)" />
+            <path d="M 0 0 Q 38 -24 80 0" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" transform="rotate(270)" />
+
+            <!-- Beaded Sugar Rim -->
+            <circle cx="0" cy="0" r="82" fill="none" stroke="#ffffff" stroke-width="4" stroke-dasharray="6 10" />
           </g>
+
+          <!-- Stationary 3D Glassy Sugar Glaze Reflection + Center Golden Gumdrop -->
+          <circle cx="0" cy="0" r="82" fill="url(#hardCandyGloss)" />
+          <path d="M -56 -40 A 66 66 0 0 1 52 -44" fill="none" stroke="#ffffff" stroke-width="7.5" stroke-linecap="round" opacity="0.65" />
+          <circle cx="-60" cy="-18" r="5" fill="#ffffff" opacity="0.7" />
+          <circle cx="0" cy="0" r="19" fill="url(#gumdropCenterGold)" stroke="#ffffff" stroke-width="4" />
+          <circle cx="-6" cy="-6" r="5" fill="#ffffff" opacity="0.85" />
         </g>
 
-        <!-- PEPPERMINT PINWHEEL #3 (Mid-Right Valley) -->
-        <g transform="translate(985, 395)">
-          <rect x="-4" y="0" width="8" height="150" rx="3" fill="url(#pinwheelStick)" />
+        <!-- ========================================================================= -->
+        <!-- PEPPERMINT CANDY PINWHEEL #3 (Mid-Right Valley - Berry Cream Swirl)       -->
+        <!-- ========================================================================= -->
+        <g transform="translate(985, 390)" filter="drop-shadow(0 8px 14px rgba(136, 19, 55, 0.28))">
+          <rect x="-5.5" y="0" width="11" height="160" rx="5" fill="url(#candyCanePoleRed)" stroke="#86198f" stroke-width="1.8" />
           <g class="pinwheel-head-spin">
-            <circle cx="0" cy="0" r="46" fill="#ffffff" stroke="#a855f7" stroke-width="5" />
-            <path d="M0 0 C16 -38 42 -22 44 0 Z" fill="#c084fc" />
-            <path d="M0 0 C38 16 22 42 0 44 Z" fill="#f472b6" />
-            <path d="M0 0 C-16 38 -42 22 -44 0 Z" fill="#c084fc" />
-            <path d="M0 0 C-38 -16 -22 -42 0 -44 Z" fill="#f472b6" />
-            <circle cx="0" cy="0" r="9" fill="#fef08a" stroke="#ffffff" stroke-width="3" />
+            <circle cx="0" cy="0" r="52" fill="#fdf4ff" stroke="#9333ea" stroke-width="4" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#a855f7" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#ec4899" transform="rotate(60)" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#a855f7" transform="rotate(120)" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#ec4899" transform="rotate(180)" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#a855f7" transform="rotate(240)" />
+            <path d="M 0 0 C 18 -22, 40 -24, 50 0 C 42 12, 22 8, 0 0 Z" fill="#ec4899" transform="rotate(300)" />
+            <circle cx="0" cy="0" r="49" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="5 7" />
           </g>
+          <circle cx="0" cy="0" r="50" fill="url(#hardCandyGloss)" />
+          <path d="M -32 -24 A 38 38 0 0 1 30 -26" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" opacity="0.65" />
+          <circle cx="0" cy="0" r="12" fill="url(#gumdropCenterGold)" stroke="#ffffff" stroke-width="3" />
+          <circle cx="-3.5" cy="-3.5" r="3" fill="#ffffff" opacity="0.8" />
         </g>
 
         <!-- FAR ROLLING PINK FROSTING HILLS + PIPED WHITE ICING TRIM -->
@@ -309,7 +413,7 @@ export function loadCandyAcademy() {
             <!-- Outer Scalloped/Scored Biscuit Frame -->
             <div style="position: absolute; inset: 9px; border: 2.5px dashed rgba(113, 52, 9, 0.55); border-radius: 11px; pointer-events: none;"></div>
 
-            <!-- Authentic Graham Cracker Vertical Center Score Crease (Top & Bottom Notches so numbers stay clear) -->
+            <!-- Authentic Graham Cracker Vertical Center Score Crease -->
             <div style="position: absolute; top: 10px; bottom: 10px; left: 50%; width: 2px; background: linear-gradient(180deg, rgba(113,52,9,0.5) 0%, rgba(113,52,9,0.12) 22%, rgba(113,52,9,0.12) 78%, rgba(113,52,9,0.5) 100%); transform: translateX(-50%); pointer-events: none;"></div>
 
             <!-- Baked Docked Perforation Holes Framing the Left & Right Edges of the Cracker -->
@@ -324,7 +428,7 @@ export function loadCandyAcademy() {
               🍭 Candy Academy
             </div>
 
-            <!-- BAKED-IN / PIPED SUGAR EQUATION (Blends directly into the Graham Cracker surface!) -->
+            <!-- BAKED-IN / PIPED SUGAR EQUATION -->
             <div id="equation-container" style="position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 24px;">
               <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: 'Nunito', 'Comic Sans MS', sans-serif; font-size: 3.9rem; font-weight: 900; color: #5c2814; letter-spacing: 0.06em; line-height: 1.04; text-shadow: 0 2px 0 #fef3c7, 0 4px 0 #fde68a, 0 -2px 2px rgba(69,26,3,0.35);">
                 <div id="math-num1">12</div>
@@ -332,7 +436,6 @@ export function loadCandyAcademy() {
                   <span id="math-op" style="color: #be185d; font-size: 3.2rem; text-shadow: 0 2px 0 #fce7f3, 0 4px 0 #fbcfe8;">+</span>
                   <span id="math-num2">15</span>
                 </div>
-                <!-- Piped White/Cinnamon Icing Divider Line -->
                 <div style="width: 108%; height: 7px; background: #5c2814; border-radius: 999px; margin: 7px -4% 6px 0; box-shadow: 0 2.5px 0 #fef3c7;"></div>
                 <div id="math-question-mark" style="color: #9d174d; letter-spacing: 0.16em; font-size: 3.1rem; text-shadow: 0 2px 0 #fce7f3, 0 4px 0 #fbcfe8;">??</div>
               </div>
@@ -341,7 +444,6 @@ export function loadCandyAcademy() {
 
           <!-- GROUNDED SALTED PRETZEL LEGS + FROSTING ANCHOR MOUNDS & SHADOW -->
           <div style="position: relative; width: 340px; height: 46px; margin-top: -8px; z-index: 1;">
-            <!-- Wide Ground Contact Shadow on the Frosting Hill -->
             <div style="position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 350px; height: 26px; background: radial-gradient(ellipse at center, rgba(112, 16, 60, 0.62) 0%, rgba(112, 16, 60, 0.25) 55%, transparent 78%); border-radius: 50%;"></div>
 
             <!-- Left Salted Pretzel Log Post -->
@@ -358,13 +460,11 @@ export function loadCandyAcademy() {
 
             <!-- Piped Whipped-Cream Frosting Mounds & Gumdrops Wrapping the Base of the Posts -->
             <svg viewBox="0 0 340 50" style="position: absolute; bottom: -8px; left: 0; width: 100%; height: 50px; overflow: visible;">
-              <!-- Left Post Frosting Tuft + Gumdrop -->
               <path d="M 22 42 Q 32 22 48 30 Q 60 16 74 30 Q 88 22 96 42 Z" fill="#fce7f3" stroke="#f472b6" stroke-width="2.5" />
               <path d="M 34 42 Q 45 28 58 35 Q 72 28 82 42 Z" fill="#ffffff" />
               <ellipse cx="35" cy="40" rx="10" ry="7" fill="#34d399" stroke="#059669" stroke-width="2" />
               <ellipse cx="86" cy="41" rx="9" ry="6" fill="#fde047" stroke="#d97706" stroke-width="2" />
 
-              <!-- Right Post Frosting Tuft + Gumdrop -->
               <path d="M 244 42 Q 254 22 268 30 Q 280 16 294 30 Q 308 22 318 42 Z" fill="#fce7f3" stroke="#f472b6" stroke-width="2.5" />
               <path d="M 256 42 Q 268 28 280 35 Q 294 28 304 42 Z" fill="#ffffff" />
               <ellipse cx="255" cy="41" rx="9" ry="6" fill="#a78bfa" stroke="#7c3aed" stroke-width="2" />
@@ -376,7 +476,6 @@ export function loadCandyAcademy() {
 
         <!-- GROUNDED TRANSLUCENT GUMMY BEAR TEACHER ("BARNABY GUMDROP") -->
         <div style="display: flex; flex-direction: column; align-items: center; position: relative; margin-bottom: -4px;">
-          <!-- Speech Bubble -->
           <div id="gummy-speech-bubble" style="background: #fff1f2; color: #831843; border: 3px solid #ec4899; border-radius: 16px; padding: 6px 14px; font-size: 0.85rem; font-weight: 900; margin-bottom: 4px; box-shadow: 0 5px 0 #be185d, 0 8px 15px rgba(131,24,67,0.28); white-space: nowrap; transition: all 0.2s;">
             Solve it to erupt the fudge river! 🍫
           </div>
@@ -456,7 +555,7 @@ export function loadCandyAcademy() {
               </svg>
             </div>
 
-            <!-- Foreground Piped Icing Tuft Overlapping the Bear's Lower Paws so he sits IN the frosting -->
+            <!-- Foreground Piped Icing Tuft Overlapping the Bear's Lower Paws -->
             <svg viewBox="0 0 190 32" style="position: absolute; bottom: -2px; left: 0; width: 190px; height: 30px; z-index: 3; pointer-events: none;">
               <path d="M 16 26 Q 32 12 52 22 Q 70 14 95 24 Q 120 14 138 22 Q 158 12 174 26 Z" fill="#fce7f3" stroke="#f472b6" stroke-width="2.5" />
               <ellipse cx="28" cy="24" rx="8" ry="5" fill="#fde047" />
