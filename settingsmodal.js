@@ -179,7 +179,14 @@ const SettingsModal = (function () {
       close();
       window.dispatchEvent(new CustomEvent("ui-map-clicked"));
     });
-    createRow("🛒", "The Shop", "VISIT", "rgba(251,191,36,0.2)", "#fbbf24");
+    createRow("🛒", "The Shop", "VISIT", "rgba(251,191,36,0.2)", "#fbbf24", () => {
+      close();
+      if (window.ShopModal && typeof window.ShopModal.open === "function") {
+        window.ShopModal.open();
+      } else {
+        window.dispatchEvent(new CustomEvent("ui-shop-clicked"));
+      }
+    });
 
     addSectionLabel("System", "#94a3b8");
     createRow("🔲", "Full Screen", "TOGGLE", "rgba(255,255,255,0.15)", "#f8fafc", () => {
