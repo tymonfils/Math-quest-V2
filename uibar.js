@@ -7,7 +7,7 @@
     const initialGold = window.Economy ? window.Economy.getGold() : 0;
 
     uiLayer.innerHTML = `
-    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; box-sizing: border-box; pointer-events: none;">
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; box-sizing: border-box; pointer-events: none;">
         
         <!-- LEFT SIDE: Map & Gold -->
         <div style="display: flex; gap: 15px; align-items: center;">
@@ -16,7 +16,7 @@
           </button>
           
           <div style="pointer-events: auto; padding: 10px 20px; background: rgba(15, 23, 42, 0.9); border: 1px solid #fbbf24; border-radius: 8px; color: #fbbf24; font-weight: 800; font-family: 'Nunito', sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-            🪙 <span id="ui-gold-display">$<initialGold></span>
+            🪙 <span id="ui-gold-display">${initialGold}</span>
           </div>
         </div>
 
@@ -26,9 +26,9 @@
         </button>
 
       </div>
-      `;
+    `;
 
-    // Attach Event Listeners
+    // Attach Button Listeners
     const mapBtn = document.getElementById("ui-map-btn");
     if (mapBtn) {
       mapBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-map-clicked")));
@@ -39,6 +39,14 @@
       settingsBtn.addEventListener("click", () => window.dispatchEvent(new CustomEvent("ui-settings-clicked")));
     }
   }
+
+  // Listen for Gold updates from economy.js
+  window.addEventListener("economy-updated", (e) => {
+    const goldEl = document.getElementById("ui-gold-display");
+    if (goldEl && e.detail && typeof e.detail.gold === "number") {
+      goldEl.textContent = e.detail.gold;
+    }
+  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderUIBar);
