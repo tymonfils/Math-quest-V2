@@ -5,7 +5,7 @@ const DEFAULT_STATE = {
   currentZone: "spaceschool",
   math: {
     grade: "2",
-    topic: "subtraction",
+    topic: "mixed", // "mixed" = 50/50 split! Can also be "addition", "subtraction", "multiplication", "division"
     regrouping: true,
     streak: 0
   },
@@ -23,10 +23,27 @@ class GameState {
   load() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : { ...DEFAULT_STATE };
+      if (!saved) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+      
+      const parsed = JSON.parse(saved);
+      // Merge with defaults in case new settings were added
+      const merged = {
+        ...DEFAULT_STATE,
+        ...parsed,
+        math: { ...DEFAULT_STATE.math, ...(parsed.math || {}) }
+      };
+
+      // Upgrade old hardcoded "subtraction" save from earlier to "mixed" 50/50 split
+      if (!localStorage.getItem("MATH_QUEST_MIXED_MIGRATED")) {
+        merged.math.topic = "mixed";
+        localStorage.setItem("MATH_QUEST_MIXED_MIGRATED", "true");
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      }
+
+      return merged;
     } catch (e) {
       console.error("Failed to load save data, using defaults:", e);
-      return { ...DEFAULT_STATE };
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
   }
 
@@ -38,10 +55,23 @@ class GameState {
     }
   }
 
+  setGrade(gradeStr) {
+    this.data.math.grade = String(gradeStr);
+    this.save();
+    window.dispatchEvent(new CustomEvent("math-settings-changed", { detail: this.data.math }));
+  }
+
+  setTopic(topicStr) {
+    this.data.math.topic = topicStr;
+    this.save();
+    window.dispatchEvent(new CustomEvent("math-settings-changed", { detail: this.data.math }));
+  }
+
   reset() {
-    this.data = { ...DEFAULT_STATE };
+    this.data = JSON.parse(JSON.stringify(DEFAULT_STATE));
     this.save();
   }
 }
 
 export const gameState = new GameState();
+window.GameState = gameState;
