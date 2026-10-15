@@ -1,5 +1,7 @@
-// mapmodal.js - Clean DOM Modular Map Deck
+// mapmodal.js - Clean DOM Modular Map Deck (All 8 Canonical Zones Unlocked)
 const MapModal = (function () {
+  let currentZoneId = "spaceschool";
+
   function openMap() {
     const modalLayer = document.getElementById("modal-layer");
     if (!modalLayer || document.getElementById("map-overlay")) return;
@@ -14,7 +16,7 @@ const MapModal = (function () {
     const card = document.createElement("div");
     card.id = "map-card";
     card.style.cssText =
-      "background:#0f172a;border:2px solid #fbbf24;border-radius:18px;padding:24px;width:90%;max-width:500px;color:#f8fafc;font-family:system-ui,sans-serif;box-shadow:0 20px 40px rgba(0,0,0,0.8);display:flex;flex-direction:column;max-height:85vh;box-sizing:border-box;";
+      "background:#0f172a;border:2px solid #fbbf24;border-radius:18px;padding:24px;width:90%;max-width:520px;color:#f8fafc;font-family:system-ui,sans-serif;box-shadow:0 20px 40px rgba(0,0,0,0.8);display:flex;flex-direction:column;max-height:85vh;box-sizing:border-box;";
 
     // Header bar
     const header = document.createElement("div");
@@ -39,47 +41,55 @@ const MapModal = (function () {
     grid.style.cssText =
       "display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;overflow-y:auto;padding-right:4px;";
 
-    // The 8 Canonical Zones Data
+    // The 8 Canonical Zones Data (All Unlocked!)
     const zones = [
-      { name: "Space School", icon: "🚀", color: "#38bdf8", locked: false },
-      { name: "Candy Academy", icon: "🍭", color: "#f472b6", locked: true },
-      { name: "Dino Lab", icon: "🦖", color: "#22c55e", locked: true },
-      { name: "Safari", icon: "🦁", color: "#eab308", locked: true },
-      { name: "Fairy Castle", icon: "🏰", color: "#c084fc", locked: true },
-      { name: "Treasure Cove", icon: "🏴‍☠️", color: "#f97316", locked: true },
-      { name: "Underwater", icon: "🐬", color: "#06b6d4", locked: true },
-      { name: "Fast Lane", icon: "🏎️", color: "#ef4444", locked: true }
+      { id: "spaceschool", name: "Space School", icon: "🚀", color: "#38bdf8" },
+      { id: "candyacademy", name: "Candy Academy", icon: "🍭", color: "#f472b6" },
+      { id: "dinolab", name: "Dino Lab", icon: "🦖", color: "#22c55e" },
+      { id: "safari", name: "Safari", icon: "🦁", color: "#eab308" },
+      { id: "fairycastle", name: "Fairy Castle", icon: "🏰", color: "#c084fc" },
+      { id: "treasurecove", name: "Treasure Cove", icon: "🏴‍☠️", color: "#f97316" },
+      { id: "underwater", name: "Underwater", icon: "🐬", color: "#06b6d4" },
+      { id: "fastlane", name: "Fast Lane", icon: "🏎️", color: "#ef4444" }
     ];
 
-    // Generate Buttons
     zones.forEach((zone) => {
+      const isCurrent = currentZoneId === zone.id;
       const btn = document.createElement("div");
 
-      const borderCol = zone.locked ? "#334155" : zone.color;
-      const opacity = zone.locked ? "0.5" : "1";
-      const cursor = zone.locked ? "not-allowed" : "pointer";
-      const bg = zone.locked ? "#1e293b" : "rgba(30, 41, 59, 0.8)";
-
       btn.style.cssText =
-        "background:" + bg + ";border:2px solid " + borderCol + ";border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:" + cursor + ";opacity:" + opacity + ";transition:transform 0.1s;user-select:none;";
+        "background:" +
+        (isCurrent ? "rgba(251, 191, 36, 0.14)" : "rgba(30, 41, 59, 0.85)") +
+        ";border:2px solid " +
+        zone.color +
+        ";border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform 0.12s;user-select:none;position:relative;";
 
       const icon = document.createElement("div");
-      icon.textContent = zone.locked ? "🔒" : zone.icon;
+      icon.textContent = zone.icon;
       icon.style.cssText = "font-size:2rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));";
 
       const name = document.createElement("div");
       name.textContent = zone.name;
-      name.style.cssText = "font-size:0.9rem;font-weight:700;color:#f8fafc;text-align:center;";
+      name.style.cssText = "font-size:0.92rem;font-weight:800;color:#f8fafc;text-align:center;";
 
       btn.appendChild(icon);
       btn.appendChild(name);
 
-      if (!zone.locked) {
-        btn.addEventListener("click", () => {
-          console.log("Traveling to " + zone.name + "...");
-          close();
-        });
+      if (isCurrent) {
+        const badge = document.createElement("div");
+        badge.textContent = "📍 HERE";
+        badge.style.cssText =
+          "position:absolute;top:6px;right:6px;font-size:0.65rem;font-weight:900;background:#fbbf24;color:#0f172a;padding:2px 6px;border-radius:999px;";
+        btn.appendChild(badge);
       }
+
+      btn.addEventListener("click", () => {
+        currentZoneId = zone.id;
+        window.dispatchEvent(
+          new CustomEvent("travel-to-zone", { detail: { id: zone.id, name: zone.name } })
+        );
+        close();
+      });
 
       grid.appendChild(btn);
     });
@@ -100,7 +110,6 @@ const MapModal = (function () {
     });
   }
 
-  // Listen for the shout from uibar.js
   window.addEventListener("ui-map-clicked", openMap);
 
   return { open: openMap };
