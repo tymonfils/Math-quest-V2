@@ -1,10 +1,10 @@
-// shopmodal.js - Full Dressing Room Preview, 45-Item Shop & 3 Custom Parent Reward Slots
+// shopmodal.js - Polished Dressing Room with Live Mini-SVG Previews on Every Shop Card
 window.ShopModal = (function () {
   const SKIN_TONES = ["#fef08a", "#fcd34d", "#f59e0b", "#d97706", "#78350f"];
   const HAIR_COLORS = ["#0f172a", "#78350f", "#b45309", "#facc15", "#ef4444", "#ec4899"];
   const REWARD_ICONS = ["🍦", "🎮", "🎁", "🍕", "🎬", "🧸", "🛹", "🎨", "💵", "🎡"];
 
-  let activeTab = "outfits"; // "outfits" | "hairs" | "pets" | "rewards"
+  let activeTab = "outfits";
   let selectedItemId = null;
   let parentUnlocked = false;
   let previewState = null;
@@ -19,6 +19,21 @@ window.ShopModal = (function () {
       if (previewState.pet !== undefined) copy.equipped.pet = previewState.pet;
     }
     return copy;
+  }
+
+  // Build a custom mini-SVG preview for any individual shop card
+  function buildCardThumbnailHTML(category, item, realAv, gender) {
+    if (category === "pets") {
+      return window.AvatarRenderer.renderPetSVG(item.id, 62);
+    }
+    const tempAv = JSON.parse(JSON.stringify(realAv));
+    tempAv.gender = gender;
+    if (category === "outfits") {
+      tempAv.equipped[gender].outfit = item.id;
+    } else if (category === "hairs") {
+      tempAv.equipped[gender].hair = item.id;
+    }
+    return window.AvatarRenderer.renderSVG(tempAv, 68, 78, false);
   }
 
   function openShop() {
@@ -36,7 +51,7 @@ window.ShopModal = (function () {
 
     const card = document.createElement("div");
     card.style.cssText =
-      "background:#0f172a;border:2px solid #fbbf24;border-radius:20px;padding:18px;width:96%;max-width:860px;height:88vh;max-height:640px;color:#f8fafc;font-family:system-ui,sans-serif;box-shadow:0 24px 50px rgba(0,0,0,0.85);display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;";
+      "background:#0f172a;border:2px solid #fbbf24;border-radius:20px;padding:18px;width:96%;max-width:920px;height:88vh;max-height:670px;color:#f8fafc;font-family:system-ui,sans-serif;box-shadow:0 24px 50px rgba(0,0,0,0.85);display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;";
 
     // --- HEADER ---
     const header = document.createElement("div");
@@ -47,7 +62,7 @@ window.ShopModal = (function () {
     titleWrap.style.cssText = "display:flex;align-items:center;gap:12px;";
     const title = document.createElement("div");
     title.textContent = "🛒 Galactic Shop & Dressing Room";
-    title.style.cssText = "font-size:1.25rem;font-weight:900;color:#fbbf24;";
+    title.style.cssText = "font-size:1.28rem;font-weight:900;color:#fbbf24;";
 
     const goldBadge = document.createElement("div");
     goldBadge.style.cssText =
@@ -65,7 +80,7 @@ window.ShopModal = (function () {
     header.appendChild(closeBtn);
     card.appendChild(header);
 
-    // --- MAIN BODY (Left: Live Avatar Preview, Right: Catalog & Tabs) ---
+    // --- MAIN BODY ---
     const body = document.createElement("div");
     body.style.cssText =
       "display:flex;gap:16px;flex:1;min-height:0;margin-top:14px;flex-wrap:wrap;";
@@ -73,11 +88,11 @@ window.ShopModal = (function () {
     // LEFT COLUMN: Live Preview Stage
     const leftCol = document.createElement("div");
     leftCol.style.cssText =
-      "width:250px;background:radial-gradient(circle at 50% 45%, #1e293b 0%, #090d16 100%);border:1px solid #334155;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;flex-shrink:0;box-sizing:border-box;position:relative;";
+      "width:270px;background:radial-gradient(circle at 50% 42%, #1e293b 0%, #090d16 100%);border:1.5px solid #334155;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;flex-shrink:0;box-sizing:border-box;position:relative;box-shadow:inset 0 0 30px rgba(0,0,0,0.6);";
 
     const previewBanner = document.createElement("div");
     previewBanner.style.cssText =
-      "font-size:0.72rem;font-weight:800;padding:3px 10px;border-radius:999px;letter-spacing:0.05em;text-transform:uppercase;";
+      "font-size:0.72rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:0.05em;text-transform:uppercase;";
 
     // Gender Switcher
     const genderRow = document.createElement("div");
@@ -110,14 +125,14 @@ window.ShopModal = (function () {
     genderRow.appendChild(girlBtn);
     genderRow.appendChild(boyBtn);
 
-    // Avatar & Pet Podium Box
+    // Larger Avatar & Pet Podium Box
     const stageBox = document.createElement("div");
     stageBox.style.cssText =
-      "position:relative;width:190px;height:185px;display:flex;align-items:center;justify-content:center;";
+      "position:relative;width:225px;height:215px;display:flex;align-items:center;justify-content:center;";
 
     const avatarHolder = document.createElement("div");
     const petHolder = document.createElement("div");
-    petHolder.style.cssText = "position:absolute;bottom:10px;right:4px;";
+    petHolder.style.cssText = "position:absolute;bottom:6px;right:2px;";
 
     stageBox.appendChild(avatarHolder);
     stageBox.appendChild(petHolder);
@@ -138,7 +153,7 @@ window.ShopModal = (function () {
       colors.forEach((c) => {
         const dot = document.createElement("button");
         dot.style.cssText =
-          "width:20px;height:20px;border-radius:50%;background:" +
+          "width:22px;height:22px;border-radius:50%;background:" +
           c +
           ";border:2px solid " +
           (getCurrent() === c ? "#38bdf8" : "#334155") +
@@ -154,7 +169,6 @@ window.ShopModal = (function () {
       return row;
     }
 
-    // Action Bar at bottom of preview (Buy / Equip button for currently previewed item)
     const actionArea = document.createElement("div");
     actionArea.style.cssText = "width:100%;min-height:42px;display:flex;flex-direction:column;gap:4px;";
 
@@ -181,7 +195,7 @@ window.ShopModal = (function () {
 
     const gridWrap = document.createElement("div");
     gridWrap.style.cssText =
-      "flex:1;overflow-y:auto;padding-right:6px;display:flex;flex-direction:column;gap:10px;";
+      "flex:1;overflow-y:auto;padding-right:6px;display:flex;flex-direction:column;gap:12px;";
 
     rightCol.appendChild(tabBar);
     rightCol.appendChild(gridWrap);
@@ -192,7 +206,6 @@ window.ShopModal = (function () {
     overlay.appendChild(card);
     modalLayer.appendChild(overlay);
 
-    // --- RENDER ENGINE ---
     function renderAll() {
       const gold = window.Economy.getGold();
       const realAv = window.Economy.getAvatar();
@@ -201,20 +214,18 @@ window.ShopModal = (function () {
 
       goldBadge.textContent = "🪙 " + gold + " Gold";
 
-      // Gender button highlight
       girlBtn.style.borderColor = g === "girl" ? "#ec4899" : "#334155";
       girlBtn.style.background = g === "girl" ? "rgba(236,72,153,0.2)" : "#1e293b";
       boyBtn.style.borderColor = g === "boy" ? "#38bdf8" : "#334155";
       boyBtn.style.background = g === "boy" ? "rgba(56,189,248,0.2)" : "#1e293b";
 
-      // Check if previewing an unequipped item
       const isPreviewing =
         (previewState.outfit && previewState.outfit !== realAv.equipped[g].outfit) ||
         (previewState.hair && previewState.hair !== realAv.equipped[g].hair) ||
         (previewState.pet !== undefined && previewState.pet !== realAv.equipped.pet);
 
       if (isPreviewing) {
-        previewBanner.textContent = "👁️ Previewing Item (Tap Buy/Equip Below)";
+        previewBanner.textContent = "👁️ Previewing Item (Tap Buy below)";
         previewBanner.style.background = "rgba(251,191,36,0.2)";
         previewBanner.style.color = "#fde047";
       } else {
@@ -223,11 +234,10 @@ window.ShopModal = (function () {
         previewBanner.style.color = "#4ade80";
       }
 
-      // Render SVG Avatar + Pet in Preview Box
-      avatarHolder.innerHTML = window.AvatarRenderer.renderSVG(previewAv, 145, 165, false);
-      petHolder.innerHTML = window.AvatarRenderer.renderPetSVG(previewAv.equipped.pet, 62);
+      // Render Large High-Detail Avatar + Pet in Left Podium
+      avatarHolder.innerHTML = window.AvatarRenderer.renderSVG(previewAv, 175, 200, false);
+      petHolder.innerHTML = window.AvatarRenderer.renderPetSVG(previewAv.equipped.pet, 74);
 
-      // Rebuild Swatches
       swatchBox.innerHTML = "";
       swatchBox.appendChild(
         buildSwatchRow(
@@ -246,7 +256,6 @@ window.ShopModal = (function () {
         )
       );
 
-      // Action Button in Left Preview Box
       actionArea.innerHTML = "";
       if (selectedItemId && activeTab !== "rewards") {
         const item = window.Economy.getItemById(selectedItemId);
@@ -297,7 +306,6 @@ window.ShopModal = (function () {
         }
       }
 
-      // Render Tabs
       tabBar.innerHTML = "";
       tabs.forEach((t) => {
         const b = document.createElement("button");
@@ -319,7 +327,6 @@ window.ShopModal = (function () {
         tabBar.appendChild(b);
       });
 
-      // Render Right Panel Content
       gridWrap.innerHTML = "";
       if (activeTab === "rewards") {
         renderParentRewards(gridWrap, gold);
@@ -364,19 +371,21 @@ window.ShopModal = (function () {
 
             const box = document.createElement("div");
             box.style.cssText =
-              "background:#1e293b;border:2px solid " +
+              "background:linear-gradient(180deg, #1e293b 0%, #0f172a 100%);border:2px solid " +
               (isSelected ? "#fbbf24" : isEquipped ? "#22c55e" : "#334155") +
-              ";border-radius:12px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;cursor:pointer;transition:transform 0.12s;";
+              ";border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;transition:transform 0.12s;position:relative;";
 
+            // Top Price / Status Pill
             const top = document.createElement("div");
-            top.style.cssText = "display:flex;justify-content:space-between;align-items:center;";
-            const iconSpan = document.createElement("span");
-            iconSpan.textContent = item.badge || item.icon || ( item.tier === "insane" ? "✨" : "💇");
-            iconSpan.style.fontSize = "1.35rem";
+            top.style.cssText = "display:flex;justify-content:space-between;align-items:center;width:100%;";
+
+            const badgeSpan = document.createElement("span");
+            badgeSpan.textContent = item.badge || item.icon || (item.tier === "insane" ? "✨" : "💇");
+            badgeSpan.style.fontSize = "1.05rem";
 
             const statusTag = document.createElement("span");
             statusTag.style.cssText =
-              "font-size:0.7rem;font-weight:800;padding:2px 7px;border-radius:999px;";
+              "font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:999px;";
             if (isEquipped) {
               statusTag.textContent = "EQUIPPED";
               statusTag.style.background = "rgba(34,197,94,0.2)";
@@ -392,16 +401,22 @@ window.ShopModal = (function () {
               statusTag.style.color = gold >= item.cost ? "#fde047" : "#94a3b8";
             }
 
-            top.appendChild(iconSpan);
+            top.appendChild(badgeSpan);
             top.appendChild(statusTag);
+
+            // Live Mini-SVG Thumbnail Box
+            const thumbBox = document.createElement("div");
+            thumbBox.style.cssText =
+              "width:84px;height:82px;border-radius:12px;background:radial-gradient(circle, rgba(56,189,248,0.12) 0%, rgba(15,23,42,0.65) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,0.06);";
+            thumbBox.innerHTML = buildCardThumbnailHTML(category, item, realAv, gender);
 
             const nameEl = document.createElement("div");
             nameEl.textContent = item.name;
-            nameEl.style.cssText = "font-weight:800;font-size:0.86rem;color:#f8fafc;";
+            nameEl.style.cssText = "font-weight:800;font-size:0.84rem;color:#f8fafc;text-align:center;";
 
             const subBtn = document.createElement("div");
             subBtn.style.cssText =
-              "font-size:0.72rem;font-weight:700;text-align:center;padding:4px;border-radius:6px;background:rgba(15,23,42,0.6);color:#cbd5e1;";
+              "width:100%;font-size:0.7rem;font-weight:700;text-align:center;padding:4px 0;border-radius:6px;background:rgba(15,23,42,0.75);color:#cbd5e1;";
             subBtn.textContent = owned
               ? isEquipped
                 ? "✓ Wearing"
@@ -409,6 +424,7 @@ window.ShopModal = (function () {
               : "👁️ Tap to Preview";
 
             box.appendChild(top);
+            box.appendChild(thumbBox);
             box.appendChild(nameEl);
             box.appendChild(subBtn);
 
@@ -418,7 +434,6 @@ window.ShopModal = (function () {
               if (category === "hairs") previewState.hair = item.id;
               if (category === "pets") previewState.pet = item.id;
 
-              // If already owned, equip right away on click for effortless dressing!
               if (owned) {
                 window.Economy.equipItem(category, item.id);
                 previewState = { outfit: null, hair: null, pet: undefined };
@@ -433,7 +448,6 @@ window.ShopModal = (function () {
       });
     }
 
-    // --- 3 CUSTOM PARENT REWARD SLOTS ---
     function renderParentRewards(container, gold) {
       const topBar = document.createElement("div");
       topBar.style.cssText =
@@ -535,7 +549,6 @@ window.ShopModal = (function () {
         rowTop.appendChild(leftInfo);
         rowTop.appendChild(redeemBtn);
 
-        // Progress Bar
         const barBg = document.createElement("div");
         barBg.style.cssText =
           "width:100%;height:10px;background:#0f172a;border-radius:999px;overflow:hidden;border:1px solid #334155;";
@@ -549,7 +562,6 @@ window.ShopModal = (function () {
         cardRow.appendChild(rowTop);
         cardRow.appendChild(barBg);
 
-        // Parent Edit Controls (Visible when PIN unlocked)
         if (parentUnlocked) {
           const editBox = document.createElement("div");
           editBox.style.cssText =
