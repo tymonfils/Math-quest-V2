@@ -1,6 +1,6 @@
-// avatarstage.js - Playable Bottom-of-Screen Character & Tag-Along Pet Physics
+// Avatarstage.js - Larger Playable Character & Custom SVG Tag-Along Pet Physics
 (function () {
-  let x = 220;
+  let x = 230;
   let y = 0;
   let vy = 0;
   let facing = 1; // 1 = right, -1 = left
@@ -8,7 +8,7 @@
   let isMoving = false;
 
   // Pet follow coordinates
-  let petX = 155;
+  let petX = 150;
   let petY = 0;
   let petVy = 0;
 
@@ -22,7 +22,7 @@
     const stage = document.createElement("div");
     stage.id = "avatar-stage-layer";
     stage.style.cssText =
-      "position:fixed;bottom:0;left:0;width:100vw;height:145px;z-index:8500;pointer-events:none;overflow:visible;";
+      "position:fixed;bottom:0;left:0;width:100vw;height:165px;z-index:8500;pointer-events:none;overflow:visible;";
 
     // Touch D-Pad + Jump Controls (Bottom-Left)
     const controls = document.createElement("div");
@@ -33,7 +33,7 @@
       const btn = document.createElement("button");
       btn.textContent = label;
       btn.style.cssText =
-        "height:42px;min-width:44px;padding:0 12px;border-radius:10px;background:rgba(15,23,42,0.82);border:2px solid #38bdf8;color:#f8fafc;font-weight:900;font-size:0.95rem;cursor:pointer;user-select:none;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
+        "height:42px;min-width:44px;padding:0 12px;border-radius:10px;background:rgba(15,23,42,0.86);border:2px solid #38bdf8;color:#f8fafc;font-weight:900;font-size:0.95rem;cursor:pointer;user-select:none;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
       btn.addEventListener("pointerdown", (e) => {
         e.preventDefault();
         onDown();
@@ -52,17 +52,17 @@
     controls.appendChild(rightBtn);
     controls.appendChild(jumpBtn);
 
-    // Pet Container
+    // Larger Pet Container (78x78)
     petWrap = document.createElement("div");
     petWrap.id = "stage-pet-actor";
     petWrap.style.cssText =
-      "position:absolute;bottom:14px;left:0;width:64px;height:64px;pointer-events:none;will-change:transform;";
+      "position:absolute;bottom:8px;left:0;width:78px;height:78px;pointer-events:none;will-change:transform;";
 
-    // Avatar Container
+    // Larger Avatar Container (136x156)
     avatarWrap = document.createElement("div");
     avatarWrap.id = "stage-avatar-actor";
     avatarWrap.style.cssText =
-      "position:absolute;bottom:8px;left:0;width:110px;height:125px;pointer-events:auto;cursor:pointer;will-change:transform;filter:drop-shadow(0 6px 10px rgba(0,0,0,0.65));";
+      "position:absolute;bottom:4px;left:0;width:136px;height:156px;pointer-events:auto;cursor:pointer;will-change:transform;filter:drop-shadow(0 8px 14px rgba(0,0,0,0.65));";
     avatarWrap.title = "Click to open Wardrobe & Shop!";
     avatarWrap.addEventListener("click", () => {
       window.dispatchEvent(new CustomEvent("ui-shop-clicked"));
@@ -82,33 +82,32 @@
 
   function triggerJump() {
     if (y === 0) {
-      vy = 11.5;
-      // Pet jumps a split-second after player!
+      vy = 12.2;
       setTimeout(() => {
-        if (petY === 0) petVy = 9.5;
-      }, 140);
+        if (petY === 0) petVy = 10.2;
+      }, 130);
     }
   }
 
   function refreshGraphics() {
     if (!window.Economy || !window.AvatarRenderer || !avatarInner) return;
     const avatar = window.Economy.getAvatar();
-    avatarInner.innerHTML = window.AvatarRenderer.renderSVG(avatar, 105, 120, isMoving);
+    avatarInner.innerHTML = window.AvatarRenderer.renderSVG(avatar, 136, 156, isMoving);
     if (petWrap) {
-      petWrap.innerHTML = window.AvatarRenderer.renderPetSVG(avatar.equipped.pet, 58);
+      petWrap.innerHTML = window.AvatarRenderer.renderPetSVG(avatar.equipped.pet, 76);
     }
   }
 
   function loop() {
-    const maxW = Math.max(320, window.innerWidth - 120);
+    const maxW = Math.max(320, window.innerWidth - 145);
     const prevMoving = isMoving;
 
     if (keys.left) {
-      x = Math.max(15, x - 4.5);
+      x = Math.max(15, x - 4.8);
       facing = -1;
       isMoving = true;
     } else if (keys.right) {
-      x = Math.min(maxW, x + 4.5);
+      x = Math.min(maxW, x + 4.8);
       facing = 1;
       isMoving = true;
     } else {
@@ -119,7 +118,6 @@
       refreshGraphics();
     }
 
-    // Player Jump Gravity
     if (y > 0 || vy !== 0) {
       y += vy;
       vy -= 0.62;
@@ -129,8 +127,7 @@
       }
     }
 
-    // Pet Follow AI (Smoothly trails behind player)
-    const targetPetX = facing === 1 ? x - 58 : x + 78;
+    const targetPetX = facing === 1 ? x - 74 : x + 98;
     petX += (targetPetX - petX) * 0.1;
 
     if (petY > 0 || petVy !== 0) {
@@ -142,8 +139,8 @@
       }
     }
 
-    const bob = isMoving && y === 0 ? Math.abs(Math.sin(Date.now() * 0.015)) * 5 : 0;
-    const petBob = Math.sin(Date.now() * 0.008) * 4;
+    const bob = isMoving && y === 0 ? Math.abs(Math.sin(Date.now() * 0.015)) * 5.5 : 0;
+    const petBob = Math.sin(Date.now() * 0.008) * 4.5;
 
     if (avatarWrap) {
       avatarWrap.style.transform =
@@ -157,7 +154,6 @@
     requestAnimationFrame(loop);
   }
 
-  // Keyboard Listeners (Arrows or WASD + Spacebar, ignored when typing in an input box)
   window.addEventListener("keydown", (e) => {
     const tag = document.activeElement ? document.activeElement.tagName : "";
     if (tag === "INPUT" || tag === "TEXTAREA") return;
