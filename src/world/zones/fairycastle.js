@@ -18,8 +18,8 @@ export function loadFairyCastle() {
       50% { transform: translateY(-10px); }
     }
     @keyframes floatingMiniIsland {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(8px) rotate(1deg); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(8px); }
     }
     @keyframes waterfallFlow {
       0% { stroke-dashoffset: 0; }
@@ -30,8 +30,8 @@ export function loadFairyCastle() {
       50% { transform: scale(1.16); opacity: 0.88; }
     }
     @keyframes auroraWave {
-      0%, 100% { transform: translateY(0px) scaleY(1) skewX(0deg); opacity: 0.65; }
-      50% { transform: translateY(-12px) scaleY(1.18) skewX(4deg); opacity: 0.95; }
+      0%, 100% { transform: translateY(0px); opacity: 0.65; }
+      50% { transform: translateY(-12px); opacity: 0.95; }
     }
     @keyframes lanternSwing {
       0%, 100% { transform: rotate(-5deg); }
@@ -42,8 +42,8 @@ export function loadFairyCastle() {
       50% { transform: translateX(-18px) translateY(2px); }
     }
     @keyframes fireflyTwinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.7) translateY(0px); }
-      50% { opacity: 1; transform: scale(1.3) translateY(-8px); }
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 1; }
     }
     @keyframes titaniaHover {
       0%, 100% { transform: translateY(0px); }
@@ -100,7 +100,7 @@ export function loadFairyCastle() {
       animation: titaniaError 0.55s ease-in-out 1 !important;
     }
     #citadel-sky-beam {
-      transform-origin: 1070px 425px;
+      transform-origin: 1095px 450px;
       transform: scaleY(0);
       opacity: 0;
       pointer-events: none;
@@ -117,12 +117,19 @@ export function loadFairyCastle() {
       <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;">
         <defs>
           <!-- Celestial Night & Left-Positioned Moon Halo Glow -->
-          <radialGradient id="moonHaloGlow" cx="22%" cy="22%" r="42%">
+          <radialGradient id="moonHaloGlow" cx="20%" cy="20%" r="42%">
             <stop offset="0%" stop-color="#fdf4ff" stop-opacity="0.95" />
             <stop offset="22%" stop-color="#f5d0fe" stop-opacity="0.65" />
             <stop offset="55%" stop-color="#c084fc" stop-opacity="0.28" />
             <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0" />
           </radialGradient>
+
+          <!-- Clean Crescent Moon Cutout Mask -->
+          <mask id="crescentMoonMask">
+            <rect x="-150" y="-150" width="300" height="300" fill="black" />
+            <circle cx="0" cy="0" r="88" fill="white" />
+            <circle cx="34" cy="-22" r="76" fill="black" />
+          </mask>
 
           <linearGradient id="auroraRibbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0" />
@@ -235,10 +242,9 @@ export function loadFairyCastle() {
 
         <!-- Crisp Starfield Constellation Dots -->
         <g fill="#ffffff" opacity="0.85">
-          <circle cx="95" cy="68" r="1.8" /><circle cx="185" cy="42" r="2.4" /><circle cx="490" cy="95" r="1.5" />
+          <circle cx="95" cy="68" r="1.8" /><circle cx="485" cy="42" r="2.4" /><circle cx="590" cy="95" r="1.5" />
           <circle cx="420" cy="54" r="2.2" /><circle cx="540" cy="88" r="1.6" /><circle cx="660" cy="38" r="2.5" />
           <circle cx="780" cy="76" r="1.8" /><circle cx="1290" cy="55" r="2.2" /><circle cx="1380" cy="110" r="1.6" />
-          <!-- Four-Point Twinkling Stars -->
           <polygon points="420,42 423,51 432,54 423,57 420,66 417,57 408,54 417,51" fill="#fef08a" />
           <polygon points="660,26 663,35 672,38 663,41 660,50 657,41 648,38 657,35" fill="#bae6fd" />
         </g>
@@ -249,11 +255,15 @@ export function loadFairyCastle() {
           <path d="M 80 130 Q 440 55 780 125 T 1440 95 L 1440 140 Q 780 165 440 95 T 80 165 Z" fill="url(#auroraRibbonGrad)" opacity="0.7" />
         </g>
 
-        <!-- Giant Luminous Crescent Moon Positioned in the Left Sky -->
-        <g transform="translate(310, 175)" filter="drop-shadow(0 0 35px rgba(253, 244, 255, 0.8))">
-          <path d="M -45 -95 A 105 105 0 1 0 85 55 A 82 82 0 1 1 -45 -95 Z" fill="#fffbeb" />
-          <circle cx="2" cy="25" r="9" fill="#fde68a" opacity="0.45" />
-          <circle cx="28" cy="48" r="14" fill="#fde68a" opacity="0.35" />
+        <!-- GIANT LUMINOUS CRESCENT MOON IN THE TOP-LEFT SKY -->
+        <g transform="translate(275, 165)">
+          <!-- Soft Outer Moonbeam Halo -->
+          <circle cx="0" cy="0" r="115" fill="#fdf4ff" opacity="0.18" filter="url(#softMagicBlur)" />
+          <circle cx="0" cy="0" r="88" fill="#fffbeb" mask="url(#crescentMoonMask)" filter="drop-shadow(0 0 28px rgba(254, 240, 138, 0.9))" />
+          <!-- Subtle Moon Craters Inside Crescent -->
+          <circle cx="-42" cy="12" r="11" fill="#fde68a" opacity="0.45" />
+          <circle cx="-26" cy="42" r="15" fill="#fde68a" opacity="0.38" />
+          <circle cx="-48" cy="-22" r="8" fill="#fde68a" opacity="0.35" />
         </g>
 
         <!-- Distant Misty Lavender Mountain Peaks -->
@@ -263,14 +273,17 @@ export function loadFairyCastle() {
         <!-- ========================================================================= -->
         <!-- 2. SECONDARY FLOATING SKY-ISLAND & ELVEN GAZEBO (CENTER-LEFT SKY)         -->
         <!-- ========================================================================= -->
-        <g style="animation: floatingMiniIsland 6.5s ease-in-out infinite;" transform="translate(535, 165)">
-          <polygon points="10,75 130,75 110,115 80,145 65,175 45,135 22,110" fill="url(#floatingCliffRock)" stroke="#6d28d9" stroke-width="1.5" />
-          <polygon points="58,155 65,190 72,155 65,145" fill="#38bdf8" filter="drop-shadow(0 0 8px #38bdf8)" />
-          <ellipse cx="70" cy="75" rx="64" ry="10" fill="#14b8a6" />
-          <rect x="42" y="38" width="8" height="36" fill="url(#castleMarbleWall)" />
-          <rect x="90" y="38" width="8" height="36" fill="url(#castleMarbleWall)" />
-          <path d="M 36 38 Q 70 8 104 38 Z" fill="url(#roseGoldSpire)" stroke="#fef08a" stroke-width="1.5" />
-          <circle cx="70" cy="54" r="6" fill="#fef08a" filter="drop-shadow(0 0 8px #fef08a)" />
+        <!-- Static outer transform + animated inner group so CSS never resets X/Y! -->
+        <g transform="translate(525, 165)">
+          <g style="animation: floatingMiniIsland 6.5s ease-in-out infinite;">
+            <polygon points="10,75 130,75 110,115 80,145 65,175 45,135 22,110" fill="url(#floatingCliffRock)" stroke="#6d28d9" stroke-width="1.5" />
+            <polygon points="58,155 65,190 72,155 65,145" fill="#38bdf8" filter="drop-shadow(0 0 8px #38bdf8)" />
+            <ellipse cx="70" cy="75" rx="64" ry="10" fill="#14b8a6" />
+            <rect x="42" y="38" width="8" height="36" fill="url(#castleMarbleWall)" />
+            <rect x="90" y="38" width="8" height="36" fill="url(#castleMarbleWall)" />
+            <path d="M 36 38 Q 70 8 104 38 Z" fill="url(#roseGoldSpire)" stroke="#fef08a" stroke-width="1.5" />
+            <circle cx="70" cy="54" r="6" fill="#fef08a" filter="drop-shadow(0 0 8px #fef08a)" />
+          </g>
         </g>
 
         <!-- ========================================================================= -->
@@ -282,130 +295,133 @@ export function loadFairyCastle() {
         <!-- ========================================================================= -->
         <!-- 4. GRAND CELESTIAL FLOATING FAIRY CITADEL (SHIFTED RIGHT & LOWERED)       -->
         <!-- ========================================================================= -->
-        <!-- Prismatic Awakening Sky Pillar (Aligned to Castle Spire at x=1070) -->
+        <!-- Prismatic Awakening Sky Pillar (Aligned to Castle Main Spire at x=1095) -->
         <g id="citadel-sky-beam">
-          <rect x="990" y="-50" width="160" height="490" fill="url(#citadelBeamGrad)" filter="url(#softMagicBlur)" />
-          <rect x="1045" y="-50" width="50" height="490" fill="#ffffff" opacity="0.9" filter="url(#softMagicBlur)" />
-          <circle cx="1070" cy="245" r="140" fill="none" stroke="#fef08a" stroke-width="4" stroke-dasharray="18 12" />
-          <circle cx="1070" cy="245" r="95" fill="none" stroke="#f472b6" stroke-width="3" />
+          <rect x="1015" y="-50" width="160" height="510" fill="url(#citadelBeamGrad)" filter="url(#softMagicBlur)" />
+          <rect x="1070" y="-50" width="50" height="510" fill="#ffffff" opacity="0.9" filter="url(#softMagicBlur)" />
+          <circle cx="1095" cy="270" r="140" fill="none" stroke="#fef08a" stroke-width="4" stroke-dasharray="18 12" />
+          <circle cx="1095" cy="270" r="95" fill="none" stroke="#f472b6" stroke-width="3" />
         </g>
 
-        <g style="animation: floatingIslandBob 5.2s ease-in-out infinite;" transform="translate(835, 130)" filter="drop-shadow(0 18px 32px rgba(9, 4, 24, 0.75))">
-          
-          <!-- A. Colossal Floating Sky-Cliff Base & Glowing Under-Crystals -->
-          <polygon points="35,315 435,315 405,375 350,415 295,465 255,430 235,505 205,435 165,470 115,410 65,370" fill="url(#floatingCliffRock)" stroke="#7e22ce" stroke-width="2" />
-          <polygon points="235,315 295,465 235,505 205,435" fill="#1e1b4b" opacity="0.7" />
-          <polygon points="115,315 165,470 205,435 175,315" fill="#3b0764" opacity="0.6" />
-          <!-- Giant Glowing Amethyst & Cyan Levitation Crystals Embedded in Bottom of Cliff -->
-          <polygon points="222,475 235,540 248,475 235,455" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.5" filter="drop-shadow(0 0 12px #38bdf8)" />
-          <polygon points="155,445 165,495 175,445 165,430" fill="#f472b6" stroke="#fce7f3" stroke-width="1.5" filter="drop-shadow(0 0 10px #f472b6)" />
-          <polygon points="285,440 295,492 305,440 295,425" fill="#f472b6" stroke="#fce7f3" stroke-width="1.5" filter="drop-shadow(0 0 10px #f472b6)" />
+        <!-- Outer Static Position Group (x=860, y=150) + Inner Bobbing Group -->
+        <g transform="translate(860, 150)" filter="drop-shadow(0 18px 32px rgba(9, 4, 24, 0.75))">
+          <g style="animation: floatingIslandBob 5.2s ease-in-out infinite;">
+            
+            <!-- A. Colossal Floating Sky-Cliff Base & Glowing Under-Crystals -->
+            <polygon points="35,315 435,315 405,375 350,415 295,465 255,430 235,505 205,435 165,470 115,410 65,370" fill="url(#floatingCliffRock)" stroke="#7e22ce" stroke-width="2" />
+            <polygon points="235,315 295,465 235,505 205,435" fill="#1e1b4b" opacity="0.7" />
+            <polygon points="115,315 165,470 205,435 175,315" fill="#3b0764" opacity="0.6" />
+            <polygon points="222,475 235,540 248,475 235,455" fill="#38bdf8" stroke="#e0f2fe" stroke-width="1.5" filter="drop-shadow(0 0 12px #38bdf8)" />
+            <polygon points="155,445 165,495 175,445 165,430" fill="#f472b6" stroke="#fce7f3" stroke-width="1.5" filter="drop-shadow(0 0 10px #f472b6)" />
+            <polygon points="285,440 295,492 305,440 295,425" fill="#f472b6" stroke="#fce7f3" stroke-width="1.5" filter="drop-shadow(0 0 10px #f472b6)" />
 
-          <!-- Hanging Bioluminescent Vines & Roots Under Floating Island -->
-          <path d="M 85 365 Q 80 410 88 445 M 135 395 Q 130 440 138 475 M 335 395 Q 342 440 334 475 M 385 360 Q 390 405 382 435" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 4" opacity="0.75" />
+            <!-- Hanging Bioluminescent Vines & Roots Under Floating Island -->
+            <path d="M 85 365 Q 80 410 88 445 M 135 395 Q 130 440 138 475 M 335 395 Q 342 440 334 475 M 385 360 Q 390 405 382 435" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="4 4" opacity="0.75" />
 
-          <!-- Lush Emerald & Lavender Cliff-Top Gardens -->
-          <path d="M 25 315 Q 125 295 235 312 Q 345 295 445 315 L 435 330 Q 235 342 35 330 Z" fill="#14b8a6" stroke="#5eead4" stroke-width="2" />
+            <!-- Lush Emerald & Lavender Cliff-Top Gardens -->
+            <path d="M 25 315 Q 125 295 235 312 Q 345 295 445 315 L 435 330 Q 235 342 35 330 Z" fill="#14b8a6" stroke="#5eead4" stroke-width="2" />
 
-          <!-- B. Background Flanking Towers (Towers #1 & #7) -->
-          <rect x="52" y="175" width="38" height="140" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.5" />
-          <polygon points="44,175 71,95 98,175" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="1.5" />
-          <line x1="71" y1="95" x2="71" y2="72" stroke="#fde047" stroke-width="2" />
-          <circle cx="71" cy="70" r="3.5" fill="#fef08a" />
+            <!-- B. Background Flanking Towers (Towers #1 & #7) -->
+            <rect x="52" y="175" width="38" height="140" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.5" />
+            <polygon points="44,175 71,95 98,175" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="1.5" />
+            <line x1="71" y1="95" x2="71" y2="72" stroke="#fde047" stroke-width="2" />
+            <circle cx="71" cy="70" r="3.5" fill="#fef08a" />
 
-          <rect x="380" y="175" width="38" height="140" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.5" />
-          <polygon points="372,175 399,95 426,175" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="1.5" />
-          <line x1="399" y1="95" x2="399" y2="72" stroke="#fde047" stroke-width="2" />
-          <circle cx="399" cy="70" r="3.5" fill="#fef08a" />
+            <rect x="380" y="175" width="38" height="140" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.5" />
+            <polygon points="372,175 399,95 426,175" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="1.5" />
+            <line x1="399" y1="95" x2="399" y2="72" stroke="#fde047" stroke-width="2" />
+            <circle cx="399" cy="70" r="3.5" fill="#fef08a" />
 
-          <!-- C. Ornate Flying Buttresses & Arched Aqueduct Bridges -->
-          <path d="M 90 245 Q 115 215 135 215 L 135 235 Q 110 235 90 265 Z" fill="url(#castleMarbleWall)" stroke="#9333ea" stroke-width="1.5" />
-          <path d="M 380 245 Q 355 215 335 215 L 335 235 Q 360 235 380 265 Z" fill="url(#castleMarbleWall)" stroke="#9333ea" stroke-width="1.5" />
+            <!-- C. Ornate Flying Buttresses & Arched Aqueduct Bridges -->
+            <path d="M 90 245 Q 115 215 135 215 L 135 235 Q 110 235 90 265 Z" fill="url(#castleMarbleWall)" stroke="#9333ea" stroke-width="1.5" />
+            <path d="M 380 245 Q 355 215 335 215 L 335 235 Q 360 235 380 265 Z" fill="url(#castleMarbleWall)" stroke="#9333ea" stroke-width="1.5" />
 
-          <!-- D. Mid-Tier Rose-Gold Turrets (Towers #2 & #6) -->
-          <rect x="112" y="135" width="48" height="180" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.8" />
-          <rect x="106" y="132" width="60" height="8" rx="3" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
-          <path d="M 106 132 C 106 95, 136 68, 136 38 C 136 68, 166 95, 166 132 Z" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.8" />
-          <rect x="128" y="162" width="16" height="32" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
-          <rect x="128" y="212" width="16" height="28" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
+            <!-- D. Mid-Tier Rose-Gold Turrets (Towers #2 & #6) -->
+            <rect x="112" y="135" width="48" height="180" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.8" />
+            <rect x="106" y="132" width="60" height="8" rx="3" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
+            <path d="M 106 132 C 106 95, 136 68, 136 38 C 136 68, 166 95, 166 132 Z" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.8" />
+            <rect x="128" y="162" width="16" height="32" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
+            <rect x="128" y="212" width="16" height="28" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
 
-          <rect x="310" y="135" width="48" height="180" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.8" />
-          <rect x="304" y="132" width="60" height="8" rx="3" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
-          <path d="M 304 132 C 304 95, 334 68, 334 38 C 334 68, 364 95, 364 132 Z" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.8" />
-          <rect x="326" y="162" width="16" height="32" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
-          <rect x="326" y="212" width="16" height="28" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
+            <rect x="310" y="135" width="48" height="180" fill="url(#castleMarbleWall)" stroke="#7e22ce" stroke-width="1.8" />
+            <rect x="304" y="132" width="60" height="8" rx="3" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
+            <path d="M 304 132 C 304 95, 334 68, 334 38 C 334 68, 364 95, 364 132 Z" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.8" />
+            <rect x="326" y="162" width="16" height="32" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
+            <rect x="326" y="212" width="16" height="28" rx="8" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.5" />
 
-          <!-- E. Grand Central Cathedral Keep & Rose Window -->
-          <rect x="155" y="155" width="160" height="160" fill="url(#castleMarbleWall)" stroke="#6b21a8" stroke-width="2" />
-          <path d="M 155 155 L 155 145 L 170 145 L 170 155 L 185 155 L 185 145 L 200 145 L 200 155 L 270 155 L 270 145 L 285 145 L 285 155 L 300 155 L 300 145 L 315 145 L 315 155 Z" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
+            <!-- E. Grand Central Cathedral Keep & Rose Window -->
+            <rect x="155" y="155" width="160" height="160" fill="url(#castleMarbleWall)" stroke="#6b21a8" stroke-width="2" />
+            <path d="M 155 155 L 155 145 L 170 145 L 170 155 L 185 155 L 185 145 L 200 145 L 200 155 L 270 155 L 270 145 L 285 145 L 285 155 L 300 155 L 300 145 L 315 145 L 315 155 Z" fill="#fde047" stroke="#b45309" stroke-width="1.2" />
 
-          <!-- Towering Central Citadel Spire (Tower #4) -->
-          <rect x="198" y="68" width="74" height="145" fill="url(#castleMarbleWall)" stroke="#6b21a8" stroke-width="2" />
-          <polygon points="186,68 235,-38 284,68" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="2" />
-          <line x1="235" y1="-38" x2="235" y2="68" stroke="#fde047" stroke-width="2" />
-          <line x1="235" y1="-38" x2="210" y2="68" stroke="#60a5fa" stroke-width="1.5" />
-          <line x1="235" y1="-38" x2="260" y2="68" stroke="#1e3a8a" stroke-width="1.5" />
-          <!-- Floating Starlight Crown Finial at Peak of Main Spire -->
-          <polygon points="235,-58 240,-44 254,-44 242,-36 246,-22 235,-30 224,-22 228,-36 216,-44 230,-44" fill="#fef08a" filter="drop-shadow(0 0 10px #fef08a)" />
+            <!-- Towering Central Citadel Spire (Tower #4) -->
+            <rect x="198" y="68" width="74" height="145" fill="url(#castleMarbleWall)" stroke="#6b21a8" stroke-width="2" />
+            <polygon points="186,68 235,-38 284,68" fill="url(#castleSpireRoof)" stroke="#fde047" stroke-width="2" />
+            <line x1="235" y1="-38" x2="235" y2="68" stroke="#fde047" stroke-width="2" />
+            <line x1="235" y1="-38" x2="210" y2="68" stroke="#60a5fa" stroke-width="1.5" />
+            <line x1="235" y1="-38" x2="260" y2="68" stroke="#1e3a8a" stroke-width="1.5" />
+            <polygon points="235,-58 240,-44 254,-44 242,-36 246,-22 235,-30 224,-22 228,-36 216,-44 230,-44" fill="#fef08a" filter="drop-shadow(0 0 10px #fef08a)" />
 
-          <!-- Twin Flanking Inner Spirelets (Towers #3 & #5) -->
-          <polygon points="172,145 192,75 212,145" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.5" />
-          <polygon points="258,145 278,75 298,145" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.5" />
+            <!-- Twin Flanking Inner Spirelets (Towers #3 & #5) -->
+            <polygon points="172,145 192,75 212,145" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.5" />
+            <polygon points="258,145 278,75 298,145" fill="url(#roseGoldSpire)" stroke="#fde047" stroke-width="1.5" />
 
-          <!-- Intricate Stained-Glass Rose Window in Center Keep -->
-          <circle cx="235" cy="198" r="28" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="3" />
-          <circle cx="235" cy="198" r="18" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="5 4" />
-          <line x1="235" y1="170" x2="235" y2="226" stroke="#fde047" stroke-width="2" />
-          <line x1="207" y1="198" x2="263" y2="198" stroke="#fde047" stroke-width="2" />
-          <line x1="215" y1="178" x2="255" y2="218" stroke="#fde047" stroke-width="1.5" />
-          <line x1="255" y1="178" x2="215" y2="218" stroke="#fde047" stroke-width="1.5" />
-          <circle cx="235" cy="198" r="6" fill="#ffffff" />
+            <!-- Intricate Stained-Glass Rose Window in Center Keep -->
+            <circle cx="235" cy="198" r="28" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="3" />
+            <circle cx="235" cy="198" r="18" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="5 4" />
+            <line x1="235" y1="170" x2="235" y2="226" stroke="#fde047" stroke-width="2" />
+            <line x1="207" y1="198" x2="263" y2="198" stroke="#fde047" stroke-width="2" />
+            <line x1="215" y1="178" x2="255" y2="218" stroke="#fde047" stroke-width="1.5" />
+            <line x1="255" y1="178" x2="215" y2="218" stroke="#fde047" stroke-width="1.5" />
+            <circle cx="235" cy="198" r="6" fill="#ffffff" />
 
-          <!-- Grand Illuminated Palace Portal Gate & Colonnade Arches -->
-          <path d="M 208 315 L 208 262 C 208 240, 262 240, 262 262 L 262 315 Z" fill="#fef08a" stroke="#b45309" stroke-width="3" filter="drop-shadow(0 0 14px rgba(254,240,138,0.8))" />
-          <path d="M 216 315 L 216 268 C 216 252, 254 252, 254 268 L 254 315 Z" fill="#ffffff" opacity="0.75" />
-          <path d="M 172 295 L 172 262 C 172 252, 192 252, 192 262 L 192 295 Z" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.8" />
-          <path d="M 278 295 L 278 262 C 278 252, 298 252, 298 262 L 298 295 Z" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.8" />
+            <!-- Grand Illuminated Palace Portal Gate & Colonnade Arches -->
+            <path d="M 208 315 L 208 262 C 208 240, 262 240, 262 262 L 262 315 Z" fill="#fef08a" stroke="#b45309" stroke-width="3" filter="drop-shadow(0 0 14px rgba(254,240,138,0.8))" />
+            <path d="M 216 315 L 216 268 C 216 252, 254 252, 254 268 L 254 315 Z" fill="#ffffff" opacity="0.75" />
+            <path d="M 172 295 L 172 262 C 172 252, 192 252, 192 262 L 192 295 Z" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.8" />
+            <path d="M 278 295 L 278 262 C 278 252, 298 252, 298 262 L 298 295 Z" fill="url(#stainedGlassGlow)" stroke="#fde047" stroke-width="1.8" />
 
-          <!-- F. TWIN SHIMMERING WATERFALLS CASCADING INTO THE LAGOON BELOW -->
-          <g>
-            <!-- Left Waterfall Stream -->
-            <path d="M 118 322 C 115 375, 110 420, 106 465 L 142 465 C 138 420, 136 375, 138 322 Z" fill="url(#skyWaterfallGrad)" opacity="0.88" />
-            <path d="M 126 325 L 118 462 M 134 325 L 130 462" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="18 14" style="animation: waterfallFlow 1.8s linear infinite;" />
-            <!-- Right Waterfall Stream -->
-            <path d="M 332 322 C 335 375, 340 420, 344 465 L 308 465 C 312 420, 314 375, 312 322 Z" fill="url(#skyWaterfallGrad)" opacity="0.88" />
-            <path d="M 320 325 L 322 462 M 328 325 L 334 462" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="18 14" style="animation: waterfallFlow 1.6s linear infinite;" />
+            <!-- F. TWIN SHIMMERING WATERFALLS CASCADING INTO THE LAGOON BELOW -->
+            <g>
+              <path d="M 118 322 C 115 368, 110 408, 106 445 L 142 445 C 138 408, 136 368, 138 322 Z" fill="url(#skyWaterfallGrad)" opacity="0.88" />
+              <path d="M 126 325 L 118 442 M 134 325 L 130 442" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="18 14" style="animation: waterfallFlow 1.8s linear infinite;" />
+              <path d="M 332 322 C 335 368, 340 408, 344 445 L 308 445 C 312 408, 314 368, 312 322 Z" fill="url(#skyWaterfallGrad)" opacity="0.88" />
+              <path d="M 320 325 L 322 442 M 328 325 L 334 442" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="18 14" style="animation: waterfallFlow 1.6s linear infinite;" />
+            </g>
           </g>
         </g>
 
         <!-- Shimmering Bioluminescent Mirror Lagoon Under the Shifted Castle Waterfalls -->
         <g>
-          <ellipse cx="1055" cy="605" rx="375" ry="78" fill="#a855f7" opacity="0.35" />
-          <ellipse cx="1060" cy="608" rx="355" ry="68" fill="url(#feyLagoonWater)" stroke="#67e8f9" stroke-width="3" />
+          <ellipse cx="1080" cy="605" rx="355" ry="76" fill="#a855f7" opacity="0.35" />
+          <ellipse cx="1085" cy="608" rx="335" ry="66" fill="url(#feyLagoonWater)" stroke="#67e8f9" stroke-width="3" />
 
-          <!-- Foaming Waterfall Plunge Pools (Aligned to x=958 & x=1162) -->
-          <g style="transform-origin: 958px 592px; animation: waterfallMistPulse 2.4s ease-in-out infinite;">
-            <ellipse cx="958" cy="592" rx="44" ry="12" fill="#e0f2fe" opacity="0.85" />
-            <circle cx="940" cy="585" r="12" fill="#ffffff" opacity="0.9" />
-            <circle cx="958" cy="581" r="16" fill="#ffffff" opacity="0.95" />
-            <circle cx="978" cy="585" r="12" fill="#ffffff" opacity="0.9" />
+          <!-- Foaming Waterfall Plunge Pools (Aligned to x=984 & x=1186) -->
+          <g transform="translate(984, 592)">
+            <g style="animation: waterfallMistPulse 2.4s ease-in-out infinite;">
+              <ellipse cx="0" cy="0" rx="44" ry="12" fill="#e0f2fe" opacity="0.85" />
+              <circle cx="-18" cy="-7" r="12" fill="#ffffff" opacity="0.9" />
+              <circle cx="0" cy="-11" r="16" fill="#ffffff" opacity="0.95" />
+              <circle cx="20" cy="-7" r="12" fill="#ffffff" opacity="0.9" />
+            </g>
           </g>
-          <g style="transform-origin: 1162px 592px; animation: waterfallMistPulse 2.7s ease-in-out 0.6s infinite;">
-            <ellipse cx="1162" cy="592" rx="44" ry="12" fill="#e0f2fe" opacity="0.85" />
-            <circle cx="1144" cy="585" r="12" fill="#ffffff" opacity="0.9" />
-            <circle cx="1162" cy="581" r="16" fill="#ffffff" opacity="0.95" />
-            <circle cx="1180" cy="585" r="12" fill="#ffffff" opacity="0.9" />
+          <g transform="translate(1186, 592)">
+            <g style="animation: waterfallMistPulse 2.7s ease-in-out 0.6s infinite;">
+              <ellipse cx="0" cy="0" rx="44" ry="12" fill="#e0f2fe" opacity="0.85" />
+              <circle cx="-18" cy="-7" r="12" fill="#ffffff" opacity="0.9" />
+              <circle cx="0" cy="-11" r="16" fill="#ffffff" opacity="0.95" />
+              <circle cx="18" cy="-7" r="12" fill="#ffffff" opacity="0.9" />
+            </g>
           </g>
 
           <!-- Glowing Water Lilies & Lotus Blossoms Floating on Lagoon -->
-          <g transform="translate(835, 608)">
+          <g transform="translate(855, 608)">
             <ellipse cx="0" cy="6" rx="22" ry="7" fill="#10b981" stroke="#047857" stroke-width="1.5" />
             <polygon points="-10,4 -4,-8 0,2" fill="#f472b6" />
             <polygon points="10,4 4,-8 0,2" fill="#f472b6" />
             <polygon points="-6,5 0,-11 6,5" fill="#fbcfe8" />
             <circle cx="0" cy="2" r="3" fill="#fef08a" filter="drop-shadow(0 0 6px #fef08a)" />
           </g>
-          <g transform="translate(1255, 622)">
+          <g transform="translate(1285, 622)">
             <ellipse cx="0" cy="6" rx="20" ry="6" fill="#10b981" stroke="#047857" stroke-width="1.5" />
             <polygon points="-9,4 -3,-7 0,2" fill="#f472b6" />
             <polygon points="9,4 3,-7 0,2" fill="#f472b6" />
@@ -414,14 +430,16 @@ export function loadFairyCastle() {
           </g>
 
           <!-- Graceful Crowned Crystal Swan Gliding on the Lagoon -->
-          <g style="animation: swanGlide 7s ease-in-out infinite;" transform="translate(1055, 622)">
-            <ellipse cx="0" cy="14" rx="28" ry="5" fill="#bae6fd" opacity="0.6" />
-            <path d="M -18 10 C -18 -4, 14 -6, 24 8 C 16 14, -12 14, -18 10 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.8" />
-            <path d="M -8 6 C 0 -2, 14 0, 18 7" fill="none" stroke="#cbd5e1" stroke-width="1.8" />
-            <path d="M -14 8 C -26 -2, -12 -22, -22 -24" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
-            <circle cx="-23" cy="-24" r="4.5" fill="#ffffff" />
-            <polygon points="-27,-25 -34,-23 -27,-21" fill="#f59e0b" />
-            <polygon points="-25,-28 -23,-34 -20,-28" fill="#fde047" />
+          <g transform="translate(1085, 622)">
+            <g style="animation: swanGlide 7s ease-in-out infinite;">
+              <ellipse cx="0" cy="14" rx="28" ry="5" fill="#bae6fd" opacity="0.6" />
+              <path d="M -18 10 C -18 -4, 14 -6, 24 8 C 16 14, -12 14, -18 10 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.8" />
+              <path d="M -8 6 C 0 -2, 14 0, 18 7" fill="none" stroke="#cbd5e1" stroke-width="1.8" />
+              <path d="M -14 8 C -26 -2, -12 -22, -22 -24" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+              <circle cx="-23" cy="-24" r="4.5" fill="#ffffff" />
+              <polygon points="-27,-25 -34,-23 -27,-21" fill="#f59e0b" />
+              <polygon points="-25,-28 -23,-34 -20,-28" fill="#fde047" />
+            </g>
           </g>
         </g>
 
@@ -722,8 +740,8 @@ function triggerCitadelAwakening() {
       </svg>`;
       p.style.cssText = `
         position: absolute;
-        left: 74%;
-        top: 48%;
+        left: 76%;
+        top: 50%;
         --tx: ${tx};
         --ty: ${ty};
         --rot: ${rot};
@@ -733,8 +751,8 @@ function triggerCitadelAwakening() {
       const size = 8 + Math.random() * 10;
       p.style.cssText = `
         position: absolute;
-        left: 74%;
-        top: 48%;
+        left: 76%;
+        top: 50%;
         width: ${size}px;
         height: ${size}px;
         border-radius: 50%;
