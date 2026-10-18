@@ -1,10 +1,10 @@
+// src/world/zones/spaceschool.js - Flagship Opening Biome: Galactic Star-Academy Observatory, Ringed Gas Giant & Wormhole Stargate
 import { getCurrentProblem, submitAnswer } from "../../math/mathEngine.js";
 
 export function loadSpaceSchool() {
   const zoneLayer = document.getElementById("game-container");
   if (!zoneLayer) return;
 
-  // Ensure keyframe animations exist in document head
   let styleEl = document.getElementById("spaceschool-styles");
   if (!styleEl) {
     styleEl = document.createElement("style");
@@ -13,313 +13,391 @@ export function loadSpaceSchool() {
   }
 
   styleEl.textContent = `
-    @keyframes scrollStarsSlow {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes scrollStarsFast {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes twinkleLayer {
-      0%, 100% { opacity: 0.45; }
-      50% { opacity: 0.95; }
-    }
-    @keyframes floatPlanet {
-      0%, 100% { transform: translateY(0px) rotate(-12deg); }
-      50% { transform: translateY(-8px) rotate(-10deg); }
-    }
-    @keyframes cometShoot1 {
-      0% { transform: translate(-140px, -40px) rotate(24deg) scale(0.8); opacity: 0; }
-      8% { opacity: 1; }
-      38% { transform: translate(780px, 340px) rotate(24deg) scale(1.05); opacity: 0; }
-      100% { transform: translate(780px, 340px) rotate(24deg) scale(1.05); opacity: 0; }
-    }
-    @keyframes cometShoot2 {
-      0% { transform: translate(-160px, 20px) rotate(16deg) scale(0.9); opacity: 0; }
-      10% { opacity: 1; }
-      42% { transform: translate(820px, 260px) rotate(16deg) scale(1); opacity: 0; }
-      100% { transform: translate(820px, 260px) rotate(16deg) scale(1); opacity: 0; }
-    }
-    @keyframes cometShoot3 {
-      0% { transform: translate(-120px, -20px) rotate(31deg) scale(0.7); opacity: 0; }
-      7% { opacity: 0.95; }
-      32% { transform: translate(720px, 410px) rotate(31deg) scale(0.95); opacity: 0; }
-      100% { transform: translate(720px, 410px) rotate(31deg) scale(0.95); opacity: 0; }
-    }
-    @keyframes cometShoot4 {
-      0% { transform: translate(-150px, 0px) rotate(19deg) scale(1); opacity: 0; }
-      9% { opacity: 1; }
-      36% { transform: translate(800px, 290px) rotate(19deg) scale(1.1); opacity: 0; }
-      100% { transform: translate(800px, 290px) rotate(19deg) scale(1.1); opacity: 0; }
-    }
-    @keyframes pulseFlameCore {
-      0% { transform: scaleY(0.95) scaleX(0.9); opacity: 0.85; filter: drop-shadow(0 0 6px #38bdf8); }
-      50% { transform: scaleY(1.3) scaleX(1.1); opacity: 1; filter: drop-shadow(0 0 18px #38bdf8); }
-      100% { transform: scaleY(0.9) scaleX(0.95); opacity: 0.8; filter: drop-shadow(0 0 10px #38bdf8); }
-    }
-    @keyframes pulseShockRings {
-      0% { opacity: 0.9; transform: translateY(0px) scale(0.9); }
-      100% { opacity: 0; transform: translateY(35px) scale(1.4); }
-    }
-    .vfx-core { transform-origin: top center; animation: pulseFlameCore 0.12s infinite alternate; }
-    .vfx-ring { transform-origin: top center; animation: pulseShockRings 0.4s infinite linear; }
-    @keyframes hoverTeacher {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-7px) rotate(1.5deg); }
-    }
-    @keyframes botHandLeft {
+    @keyframes planetHover {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-4px); }
+      50% { transform: translateY(-9px); }
     }
-    @keyframes botHandRight {
-      0%, 100% { transform: translateY(-3px); }
-      50% { transform: translateY(2px); }
+    @keyframes galaxySpinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    @keyframes botAntennaPulse {
-      0%, 100% { opacity: 0.6; r: 3.5; }
-      50% { opacity: 1; r: 5; }
+    @keyframes galaxySpinReverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
     }
-    @keyframes flickerRepulsor {
-      0% { opacity: 0.7; transform: scaleX(0.92) scaleY(0.95); }
-      100% { opacity: 1; transform: scaleX(1.08) scaleY(1.08); }
+    @keyframes cruiserFlyRight {
+      0% { transform: translateX(-380px) translateY(12px); }
+      50% { transform: translateX(50vw) translateY(-14px); }
+      100% { transform: translateX(118vw) translateY(6px); }
     }
-    @keyframes rocketLaunch {
-      0% { transform: translateY(0); }
-      45% { transform: translateY(-700px); opacity: 0; }
-      50% { transform: translateY(700px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+    @keyframes fighterSquadStreak {
+      0% { transform: translateX(118vw) translateY(40px); }
+      100% { transform: translateX(-360px) translateY(-55px); }
     }
-    .rocket-launching {
-      animation: rocketLaunch 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    @keyframes satelliteDrift {
+      0%, 100% { transform: translateY(0px) rotate(-4deg); }
+      50% { transform: translateY(-14px) rotate(5deg); }
+    }
+    @keyframes shootingStarStreak {
+      0%, 78% { transform: translate(0, 0) scale(0); opacity: 0; }
+      82% { transform: translate(-40px, 18px) scale(1); opacity: 1; }
+      94% { transform: translate(-380px, 165px) scale(1); opacity: 0.9; }
+      100% { transform: translate(-480px, 210px) scale(0.2); opacity: 0; }
+    }
+    @keyframes crystalPulse {
+      0%, 100% { opacity: 0.72; filter: drop-shadow(0 0 8px #38bdf8); }
+      50% { opacity: 1; filter: drop-shadow(0 0 18px #67e8f9); }
+    }
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 1; }
+    }
+    @keyframes novaHover {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes novaThrusterFlame {
+      0%, 100% { transform: scaleY(0.88); opacity: 0.8; }
+      50% { transform: scaleY(1.22); opacity: 1; }
+    }
+    @keyframes novaStaffWave {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-10deg); }
+    }
+    @keyframes novaCelebrate {
+      0% { transform: translateY(0) scale(1) rotate(0deg); }
+      25% { transform: translateY(-32px) rotate(-6deg) scale(1.06); }
+      50% { transform: translateY(-8px) rotate(5deg) scale(0.96, 1.04); }
+      75% { transform: translateY(-22px) rotate(-3deg) scale(1.03); }
+      100% { transform: translateY(0) scale(1) rotate(0deg); }
+    }
+    @keyframes novaShakeNo {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    @keyframes stargatePortalIgnite {
+      0% { opacity: 0; transform: scale(0.15) rotate(0deg); }
+      20% { opacity: 1; transform: scale(1.08) rotate(90deg); }
+      65% { opacity: 0.96; transform: scale(1) rotate(240deg); }
+      100% { opacity: 0; transform: scale(1.35) rotate(360deg); }
+    }
+    @keyframes hyperdriveStarLines {
+      0% { opacity: 0; transform: scale(0.45); }
+      20% { opacity: 0.95; transform: scale(1); }
+      75% { opacity: 0.85; transform: scale(1.18); }
+      100% { opacity: 0; transform: scale(1.4); }
+    }
+    @keyframes spaceParticleArc {
+      0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+      60% { opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(1.3) rotate(var(--rot)); opacity: 0; }
+    }
+    .nova-idle {
+      transform-origin: center bottom;
+      animation: novaHover 3.4s ease-in-out infinite;
+    }
+    .nova-party {
+      transform-origin: center bottom;
+      animation: novaCelebrate 0.9s ease-in-out 2 !important;
+    }
+    .nova-oops {
+      transform-origin: center bottom;
+      animation: novaShakeNo 0.55s ease-in-out 1 !important;
+    }
+    #wormhole-stargate-fx {
+      transform-origin: 720px 285px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #wormhole-stargate-fx.ignited {
+      animation: stargatePortalIgnite 1.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    #hyperdrive-warp-lines {
+      transform-origin: 720px 285px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #hyperdrive-warp-lines.ignited {
+      animation: hyperdriveStarLines 1.65s ease-out forwards;
     }
   `;
 
-  zoneLayer.innerHTML = [
-    '<div style="width: 100%; height: 100%; background: #0f172a; display: grid; grid-template-columns: 4fr 5fr; gap: 20px; padding: 20px; box-sizing: border-box; font-family: \'Segoe UI\', sans-serif;">',
-      
-      // 2. LEFT: UPGRADED DEEP-SPACE OBSERVATION WINDOW
-      '<div style="position: relative; border-radius: 20px; overflow: hidden; border: 4px solid #334155; box-shadow: inset 0 0 40px rgba(0,0,0,0.95);">',
-        
-        // Deep Space Gradient Void
-        '<div style="position: absolute; width: 100%; height: 100%; background: radial-gradient(ellipse at 30% 20%, #0b1528 0%, #030712 65%, #010206 100%);"></div>',
-        
-        // Cosmic Nebula Clouds (Multi-color atmospheric glow)
-        '<div style="position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at 72% 28%, rgba(56, 189, 248, 0.22) 0%, transparent 52%), radial-gradient(circle at 25% 75%, rgba(168, 85, 247, 0.18) 0%, transparent 55%), radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.1) 0%, transparent 60%); pointer-events: none;"></div>',
+  zoneLayer.innerHTML = `
+    <div id="spaceschool-world-root" style="position: relative; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(circle at 50% 32%, #17153b 0%, #090d1e 52%, #02040a 100%); font-family: 'Nunito', 'Segoe UI', sans-serif; user-select: none;">
 
-        // Far Parallax Star Layer (Small, dense, slow drift)
-        '<div style="position: absolute; width: 200%; height: 100%; background-image: radial-gradient(1px 1px at 18px 24px, #94a3b8 100%, transparent), radial-gradient(1px 1px at 74px 92px, #cbd5e1 100%, transparent), radial-gradient(1.2px 1.2px at 128px 40px, #64748b 100%, transparent), radial-gradient(1px 1px at 160px 135px, #e2e8f0 100%, transparent), radial-gradient(1px 1px at 45px 150px, #94a3b8 100%, transparent); background-size: 180px 180px; opacity: 0.65; animation: scrollStarsSlow 36s linear infinite;"></div>',
+      <!-- 1. FULL-SCREEN DEEP-SPACE PANORAMA, RINGED GAS GIANT, ORBITAL CITADEL & LUNAR BASE SVG -->
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;">
+        <defs>
+          <radialGradient id="nebulaCloudPink" cx="24%" cy="30%" r="44%">
+            <stop offset="0%" stop-color="#f472b6" stop-opacity="0.48" />
+            <stop offset="40%" stop-color="#9333ea" stop-opacity="0.28" />
+            <stop offset="75%" stop-color="#3b0764" stop-opacity="0.12" />
+            <stop offset="100%" stop-color="#02040a" stop-opacity="0" />
+          </radialGradient>
 
-        // Mid Twinkling Star Layer (Colored stars + gentle pulse)
-        '<div style="position: absolute; width: 200%; height: 100%; background-image: radial-gradient(1.6px 1.6px at 32px 48px, #f8fafc 100%, transparent), radial-gradient(1.8px 1.8px at 95px 85px, #38bdf8 100%, transparent), radial-gradient(1.5px 1.5px at 145px 30px, #f472b6 90%, transparent), radial-gradient(2px 2px at 60px 140px, #fde047 85%, transparent), radial-gradient(1.4px 1.4px at 185px 115px, #c084fc 90%, transparent); background-size: 200px 170px; animation: scrollStarsSlow 22s linear infinite, twinkleLayer 3.5s ease-in-out infinite;"></div>',
+          <radialGradient id="nebulaCloudCyan" cx="72%" cy="28%" r="46%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.52" />
+            <stop offset="42%" stop-color="#0284c7" stop-opacity="0.26" />
+            <stop offset="78%" stop-color="#1e1b4b" stop-opacity="0.1" />
+            <stop offset="100%" stop-color="#02040a" stop-opacity="0" />
+          </radialGradient>
 
-        // Near Foreground Star Layer (Bright crisp stars moving faster for 3D parallax)
-        '<div style="position: absolute; width: 200%; height: 100%; background-image: radial-gradient(2.2px 2.2px at 45px 65px, #ffffff 100%, transparent), radial-gradient(2.5px 2.5px at 150px 125px, #bae6fd 100%, transparent), radial-gradient(2px 2px at 210px 40px, #fef08a 100%, transparent); background-size: 240px 210px; opacity: 0.9; filter: drop-shadow(0 0 3px #ffffff); animation: scrollStarsFast 12s linear infinite;"></div>',
+          <radialGradient id="nebulaCoreGold" cx="50%" cy="38%" r="38%">
+            <stop offset="0%" stop-color="#fde047" stop-opacity="0.32" />
+            <stop offset="45%" stop-color="#f97316" stop-opacity="0.14" />
+            <stop offset="100%" stop-color="#02040a" stop-opacity="0" />
+          </radialGradient>
 
-        // Distant Ringed Exo-Planet in Top-Right Corner
-        '<div style="position: absolute; top: 12%; right: 12%; width: 78px; height: 78px; pointer-events: none; animation: floatPlanet 9s ease-in-out infinite;">',
-          '<svg viewBox="0 0 120 120" style="width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.25));">',
-            '<defs>',
-              '<radialGradient id="planetSphere" cx="35%" cy="30%" r="70%">',
-                '<stop offset="0%" stop-color="#67e8f9" />',
-                '<stop offset="45%" stop-color="#0284c7" />',
-                '<stop offset="85%" stop-color="#1e1b4b" />',
-                '<stop offset="100%" stop-color="#020617" />',
-              '</radialGradient>',
-            '</defs>',
-            '<ellipse cx="60" cy="62" rx="54" ry="14" fill="none" stroke="rgba(125, 211, 252, 0.35)" stroke-width="5" />',
-            '<circle cx="60" cy="60" r="28" fill="url(#planetSphere)" />',
-            '<path d="M 6 62 A 54 14 0 0 0 114 62" fill="none" stroke="#38bdf8" stroke-width="3.5" opacity="0.65" />',
-          '</svg>',
-        '</div>',
+          <linearGradient id="gasGiantBands" x1="0%" y1="0%" x2="15%" y2="100%">
+            <stop offset="0%" stop-color="#fef08a" />
+            <stop offset="14%" stop-color="#f59e0b" />
+            <stop offset="28%" stop-color="#ea580c" />
+            <stop offset="42%" stop-color="#f43f5e" />
+            <stop offset="56%" stop-color="#a855f7" />
+            <stop offset="72%" stop-color="#6366f1" />
+            <stop offset="88%" stop-color="#311042" />
+            <stop offset="100%" stop-color="#090418" />
+          </linearGradient>
 
-        // Upgraded Shooting Comets (Glowing Head + Tapered Plasma Tail)
-        '<div style="position: absolute; top: 10%; left: 0; width: 150px; height: 3px; background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.15) 35%, rgba(186, 230, 253, 0.85) 88%, #ffffff 100%); border-radius: 999px; filter: drop-shadow(0 0 6px #38bdf8); animation: cometShoot1 5.2s ease-in infinite;">',
-          '<div style="position: absolute; right: -2px; top: -2.5px; width: 8px; height: 8px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 10px 2px #38bdf8;"></div>',
-        '</div>',
+          <radialGradient id="planetShadowMask" cx="28%" cy="26%" r="72%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2" />
+            <stop offset="50%" stop-color="#000000" stop-opacity="0" />
+            <stop offset="82%" stop-color="#020617" stop-opacity="0.72" />
+            <stop offset="100%" stop-color="#02040a" stop-opacity="0.95" />
+          </radialGradient>
 
-        '<div style="position: absolute; top: 34%; left: 0; width: 185px; height: 2.5px; background: linear-gradient(90deg, transparent 0%, rgba(244, 114, 182, 0.15) 35%, rgba(251, 207, 232, 0.85) 88%, #ffffff 100%); border-radius: 999px; filter: drop-shadow(0 0 7px #f472b6); animation: cometShoot2 7.4s ease-in 1.8s infinite;">',
-          '<div style="position: absolute; right: -2px; top: -2.5px; width: 7px; height: 7px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 10px 2px #f472b6;"></div>',
-        '</div>',
+          <clipPath id="gasGiantSphereClip">
+            <circle cx="0" cy="0" r="118" />
+          </clipPath>
 
-        '<div style="position: absolute; top: 58%; left: 0; width: 125px; height: 2px; background: linear-gradient(90deg, transparent 0%, rgba(253, 224, 71, 0.15) 40%, rgba(254, 240, 138, 0.9) 90%, #ffffff 100%); border-radius: 999px; filter: drop-shadow(0 0 5px #fde047); animation: cometShoot3 4.3s ease-in 3.1s infinite;">',
-          '<div style="position: absolute; right: -2px; top: -2px; width: 6px; height: 6px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 8px 2px #fde047;"></div>',
-        '</div>',
+          <linearGradient id="planetaryRingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
+            <stop offset="25%" stop-color="#fde047" stop-opacity="0.95" />
+            <stop offset="50%" stop-color="#f472b6" stop-opacity="0.8" />
+            <stop offset="75%" stop-color="#fde047" stop-opacity="0.95" />
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.85" />
+          </linearGradient>
 
-        '<div style="position: absolute; top: 76%; left: 0; width: 165px; height: 2.5px; background: linear-gradient(90deg, transparent 0%, rgba(168, 85, 247, 0.15) 35%, rgba(216, 180, 254, 0.85) 88%, #ffffff 100%); border-radius: 999px; filter: drop-shadow(0 0 6px #c084fc); animation: cometShoot4 6.1s ease-in 0.9s infinite;">',
-          '<div style="position: absolute; right: -2px; top: -2.5px; width: 7px; height: 7px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 9px 2px #c084fc;"></div>',
-        '</div>',
+          <radialGradient id="volcanicMoonGrad" cx="35%" cy="30%" r="68%">
+            <stop offset="0%" stop-color="#fef08a" />
+            <stop offset="35%" stop-color="#f97316" />
+            <stop offset="75%" stop-color="#7c2d12" />
+            <stop offset="100%" stop-color="#1c0a02" />
+          </radialGradient>
 
-        // Subtle Glass Reflection + Heavy Spaceship Window Frame Bevel
-        '<div style="position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 35%, transparent 100%); pointer-events: none;"></div>',
-        '<div style="position: absolute; width: 100%; height: 100%; border: 18px solid #1e293b; box-sizing: border-box; box-shadow: inset 0 0 28px rgba(0,0,0,0.95); pointer-events: none;"></div>',
-      '</div>',
+          <radialGradient id="icyMoonGrad" cx="35%" cy="30%" r="68%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="45%" stop-color="#67e8f9" />
+            <stop offset="85%" stop-color="#0369a1" />
+            <stop offset="100%" stop-color="#082f49" />
+          </radialGradient>
 
-      // 3. RIGHT: BOARD & CONSOLE
-      '<div style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">',
-        
-        // 3A. MAIN WHITEBOARD HUD
-        '<div id="classroom-hud" style="flex-grow: 1; margin: 0 0 16px 0; border: 4px solid #38bdf8; border-radius: 18px; background: rgba(15, 23, 42, 0.95); box-shadow: 0 0 25px rgba(56, 189, 248, 0.25), inset 0 0 20px rgba(0,0,0,0.7); display: grid; grid-template-columns: 2fr 1fr; align-items: center; position: relative; overflow: hidden; padding: 15px;">',
-          '<div style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; background-image: linear-gradient(#1e293b 1.5px, transparent 1.5px), linear-gradient(90deg, #1e293b 1.5px, transparent 1.5px); background-size: 28px 28px; opacity: 0.5; pointer-events: none;"></div>',
-          '<div id="equation-container" style="z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">',
-            '<div style="display: flex; flex-direction: column; align-items: flex-end; font-family: monospace; font-size: 3.5rem; font-weight: bold; color: #f8fafc; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);">',
-              '<div id="math-num1">54</div>',
-              '<div style="display: flex; align-items: center; gap: 15px;">',
-                '<span id="math-op" style="color: #38bdf8; font-size: 2.8rem;">-</span>',
-                '<span id="math-num2">28</span>',
-              '</div>',
-              '<div style="width: 100%; height: 4px; background: #38bdf8; margin: 8px 0; box-shadow: 0 0 10px #38bdf8;"></div>',
-              '<div style="color: #38bdf8; letter-spacing: 0.2em;">??</div>',
-            '</div>',
-          '</div>',
-          '<div style="z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 2px dashed #334155; height: 85%; padding-left: 10px;">',
-            '<svg id="rocket-svg" viewBox="0 0 200 320" style="width: 105px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.35));">',
-              '<defs>',
-                '<linearGradient id="plasmaCore" x1="0%" y1="0%" x2="0%" y2="100%">',
-                  '<stop offset="0%" stop-color="#ffffff" />',
-                  '<stop offset="25%" stop-color="#7dd3fc" />',
-                  '<stop offset="65%" stop-color="#0284c7" />',
-                  '<stop offset="100%" stop-color="#1e1b4b" stop-opacity="0" />',
-                '</linearGradient>',
-                '<linearGradient id="hullMetal" x1="0%" y1="0%" x2="100%" y2="0%">',
-                  '<stop offset="0%" stop-color="#64748b" />',
-                  '<stop offset="35%" stop-color="#cbd5e1" />',
-                  '<stop offset="65%" stop-color="#94a3b8" />',
-                  '<stop offset="100%" stop-color="#334155" />',
-                '</linearGradient>',
-              '</defs>',
-              '<path d="M100 15 C85 60 60 120 60 210 L140 210 C140 120 115 60 100 15 Z" fill="url(#hullMetal)" stroke="#38bdf8" stroke-width="2" />',
-              '<path d="M100 15 C92 45 80 80 80 80 L120 80 C120 80 108 45 100 15 Z" fill="#0284c7" opacity="0.8" />',
-              '<line x1="100" y1="80" x2="100" y2="210" stroke="#0f172a" stroke-width="2" opacity="0.5" />',
-              '<line x1="75" y1="140" x2="125" y2="140" stroke="#0f172a" stroke-width="1.5" opacity="0.4" />',
-              '<line x1="70" y1="180" x2="130" y2="180" stroke="#0f172a" stroke-width="1.5" opacity="0.4" />',
-              '<circle cx="100" cy="115" r="20" fill="#0f172a" stroke="#38bdf8" stroke-width="3" />',
-              '<circle cx="100" cy="115" r="14" fill="#0284c7" opacity="0.6" />',
-              '<path d="M92 105 A 12 12 0 0 1 108 107" fill="none" stroke="#e0f2fe" stroke-width="2" opacity="0.8" />',
-              '<path d="M60 170 L25 220 L60 215 Z" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5" />',
-              '<path d="M140 170 L175 220 L140 215 Z" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5" />',
-              '<path d="M78 210 L68 230 L132 230 L122 210 Z" fill="#1e293b" stroke="#64748b" stroke-width="2" />',
-              '<path class="vfx-core" d="M66 230 C66 270 90 310 100 320 C110 310 134 270 134 230 Z" fill="url(#plasmaCore)" opacity="0.8" />',
-              '<path class="vfx-core" d="M78 230 C82 260 96 290 100 295 C104 290 118 260 122 230 Z" fill="#ffffff" opacity="0.9" />',
-              '<ellipse class="vfx-ring" cx="100" cy="245" rx="16" ry="4" fill="none" stroke="#e0f2fe" stroke-width="2" />',
-              '<ellipse class="vfx-ring" cx="100" cy="265" rx="22" ry="5" fill="none" stroke="#38bdf8" stroke-width="1.5" style="animation-delay: 0.2s;" />',
-            '</svg>',
-            '<span style="font-size: 0.75rem; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 6px;">Propulsion</span>',
-          '</div>',
-        '</div>',
+          <linearGradient id="stationHullMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc" />
+            <stop offset="35%" stop-color="#94a3b8" />
+            <stop offset="70%" stop-color="#475569" />
+            <stop offset="100%" stop-color="#0f172a" />
+          </linearGradient>
 
-        // 3B. CONSOLE INTERFACE + UPGRADED ROBOT TEACHER + INPUT
-        '<div style="height: 125px; border-radius: 16px; background: #1e293b; border: 3px solid #475569; box-shadow: 0 6px 20px rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; box-sizing: border-box; gap: 12px;">',
-          '<div style="display: flex; flex-direction: column; justify-content: space-around; height: 100%; min-width: 140px;">',
-            '<div style="display: flex; gap: 10px; align-items: center;">',
-              '<div style="width: 14px; height: 14px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;"></div>',
-              '<span id="system-status-text" style="font-size: 0.75rem; color: #94a3b8; letter-spacing: 0.1em;">SYSTEM: READY</span>',
-            '</div>',
-            '<div style="width: 100%; height: 6px; border-radius: 3px; background: #334155; overflow: hidden;">',
-              '<div style="width: 65%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>',
-            '</div>',
-            '<div style="display: flex; gap: 8px;">',
-              '<div style="width: 18px; height: 18px; border-radius: 4px; background: #f472b6; opacity: 0.75;"></div>',
-              '<div style="width: 18px; height: 18px; border-radius: 4px; background: #38bdf8; opacity: 0.75;"></div>',
-              '<div style="width: 18px; height: 18px; border-radius: 4px; background: #10b981; opacity: 0.75;"></div>',
-            '</div>',
-          '</div>',
+          <linearGradient id="solarPanelGrid" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1d4ed8" />
+            <stop offset="50%" stop-color="#1e3a8a" />
+            <stop offset="100%" stop-color="#172554" />
+          </linearGradient>
 
-          // UPGRADED FLOATING ROBOT INSTRUCTOR ("PROFESSOR ORBIT")
-          '<div style="display: flex; justify-content: center; align-items: center; animation: hoverTeacher 3.6s ease-in-out infinite;">',
-            '<svg style="width: 88px; height: 104px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.55));" viewBox="0 0 120 135">',
-              '<defs>',
-                '<linearGradient id="botMetalHead" x1="0%" y1="0%" x2="100%" y2="100%">',
-                  '<stop offset="0%" stop-color="#f8fafc" />',
-                  '<stop offset="55%" stop-color="#cbd5e1" />',
-                  '<stop offset="100%" stop-color="#64748b" />',
-                '</linearGradient>',
-                '<linearGradient id="botMetalBody" x1="0%" y1="0%" x2="100%" y2="0%">',
-                  '<stop offset="0%" stop-color="#94a3b8" />',
-                  '<stop offset="30%" stop-color="#f1f5f9" />',
-                  '<stop offset="75%" stop-color="#cbd5e1" />',
-                  '<stop offset="100%" stop-color="#475569" />',
-                '</linearGradient>',
-                '<radialGradient id="botCoreGlow" cx="50%" cy="50%" r="50%">',
-                  '<stop offset="0%" stop-color="#ffffff" />',
-                  '<stop offset="45%" stop-color="#38bdf8" />',
-                  '<stop offset="100%" stop-color="#0284c7" stop-opacity="0" />',
-                '</radialGradient>',
-              '</defs>',
+          <linearGradient id="farLunarRidge" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#334155" />
+            <stop offset="55%" stop-color="#1e293b" />
+            <stop offset="100%" stop-color="#090d16" />
+          </linearGradient>
 
-              // Antenna & Glowing Beacon
-              '<line x1="60" y1="18" x2="60" y2="7" stroke="#64748b" stroke-width="3" stroke-linecap="round" />',
-              '<circle cx="60" cy="6" r="4.5" fill="#38bdf8" style="animation: botAntennaPulse 1.5s infinite ease-in-out;" />',
-              '<circle cx="60" cy="6" r="2" fill="#ffffff" />',
+          <linearGradient id="midLunarSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#475569" />
+            <stop offset="35%" stop-color="#1e293b" />
+            <stop offset="80%" stop-color="#0f172a" />
+            <stop offset="100%" stop-color="#040812" />
+          </linearGradient>
 
-              // Ear Transceivers
-              '<rect x="19" y="29" width="7" height="18" rx="3" fill="#38bdf8" stroke="#1e293b" stroke-width="2" />',
-              '<rect x="94" y="29" width="7" height="18" rx="3" fill="#38bdf8" stroke="#1e293b" stroke-width="2" />',
+          <linearGradient id="nearLunarDeck" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b" />
+            <stop offset="100%" stop-color="#020617" />
+          </linearGradient>
 
-              // Head Chassis + Forehead Brow Plate
-              '<rect x="25" y="16" width="70" height="44" rx="14" fill="url(#botMetalHead)" stroke="#1e293b" stroke-width="2.5" />',
-              '<path d="M 35 20 L 85 20" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.7" />',
+          <linearGradient id="wormholeEventHorizon" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="50%" stop-color="#9333ea" />
+            <stop offset="100%" stop-color="#fde047" />
+          </linearGradient>
 
-              // Glossy Dark Visor Screen
-              '<rect x="31" y="23" width="58" height="30" rx="9" fill="#090d16" stroke="#334155" stroke-width="1.5" />',
+          <filter id="cosmicGlowBlur" x="-25%" y="-25%" width="150%" height="150%">
+            <feGaussianBlur stdDeviation="8" />
+          </filter>
+        </defs>
 
-              // Glowing Cyan Eyes with Specular Highlights
-              '<rect x="39" y="29" width="13" height="13" rx="4" fill="#38bdf8" />',
-              '<circle cx="43" cy="33" r="2.2" fill="#ffffff" />',
-              '<rect x="68" y="29" width="13" height="13" rx="4" fill="#38bdf8" />',
-              '<circle cx="72" cy="33" r="2.2" fill="#ffffff" />',
+        <rect width="1440" height="900" fill="url(#nebulaCloudPink)" />
+        <rect width="1440" height="900" fill="url(#nebulaCloudCyan)" />
+        <rect width="1440" height="900" fill="url(#nebulaCoreGold)" />
 
-              // Happy Digital Mouth / Voice Equalizer Arc
-              '<path d="M 52 46 Q 60 51 68 46" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />',
+        <g filter="url(#cosmicGlowBlur)" opacity="0.55">
+          <path d="M 80 320 Q 160 180 280 240 T 520 140 T 760 220" fill="none" stroke="#e879f9" stroke-width="45" stroke-linecap="round" />
+          <path d="M 680 180 Q 860 90 1040 190 T 1380 120" fill="none" stroke="#38bdf8" stroke-width="50" stroke-linecap="round" />
+        </g>
 
-              // Visor Glass Reflection Streak
-              '<path d="M 35 26 L 48 26" stroke="#e0f2fe" stroke-width="1.5" stroke-linecap="round" opacity="0.35" />',
+        <!-- Starfield & Constellations -->
+        <g fill="#ffffff">
+          <circle cx="85" cy="82" r="2.2" /><circle cx="145" cy="54" r="2.8" /><circle cx="210" cy="78" r="2" />
+          <circle cx="245" cy="135" r="2.2" /><circle cx="165" cy="152" r="1.8" /><circle cx="380" cy="65" r="1.6" />
+          <circle cx="495" cy="52" r="2.4" /><circle cx="565" cy="38" r="2" /><circle cx="635" cy="72" r="2.8" />
+          <polygon points="380,52 383,62 393,65 383,68 380,78 377,68 367,65 377,62" fill="#fef08a" />
+        </g>
 
-              // Neck Joint
-              '<rect x="51" y="60" width="18" height="6" rx="2" fill="#334155" />',
+        <!-- Spiral Andromeda Galaxy -->
+        <g transform="translate(275, 165) rotate(-22) scale(1, 0.44)">
+          <g style="animation: galaxySpinSlow 55s linear infinite;">
+            <path d="M 0 0 C 35 -10, 75 25, 95 68 C 110 105, 75 145, 25 145 C -45 145, -110 95, -125 25" fill="none" stroke="#e879f9" stroke-width="14" stroke-linecap="round" opacity="0.45" filter="url(#cosmicGlowBlur)" />
+            <circle cx="0" cy="0" r="34" fill="#fde047" opacity="0.65" filter="url(#cosmicGlowBlur)" />
+            <circle cx="0" cy="0" r="16" fill="#ffffff" />
+          </g>
+        </g>
 
-              // Floating Left Hand
-              '<g style="animation: botHandLeft 2.4s ease-in-out infinite;">',
-                '<circle cx="14" cy="84" r="7" fill="url(#botMetalHead)" stroke="#1e293b" stroke-width="2" />',
-                '<circle cx="14" cy="84" r="2.5" fill="#38bdf8" />',
-              '</g>',
+        <!-- Gas Giant Planet "Chronos Prime" -->
+        <g transform="translate(1135, 225)">
+          <g style="animation: planetHover 6s ease-in-out infinite;">
+            <g transform="rotate(-18)">
+              <path d="M -235 0 A 235 58 0 0 1 235 0" fill="none" stroke="url(#planetaryRingGrad)" stroke-width="22" opacity="0.78" />
+            </g>
+            <g clip-path="url(#gasGiantSphereClip)">
+              <circle cx="0" cy="0" r="118" fill="url(#gasGiantBands)" />
+              <ellipse cx="-28" cy="-18" rx="22" ry="13" transform="rotate(-18 -28 -18)" fill="#38bdf8" stroke="#fef08a" stroke-width="2.5" />
+              <circle cx="0" cy="0" r="118" fill="url(#planetShadowMask)" />
+            </g>
+            <circle cx="0" cy="0" r="118" fill="none" stroke="#67e8f9" stroke-width="3" opacity="0.7" filter="drop-shadow(0 0 18px rgba(56,189,248,0.55))" />
+            <g transform="rotate(-18)">
+              <path d="M -235 0 A 235 58 0 0 0 235 0" fill="none" stroke="url(#planetaryRingGrad)" stroke-width="22" opacity="0.95" filter="drop-shadow(0 8px 12px rgba(0,0,0,0.65))" />
+            </g>
+          </g>
+        </g>
 
-              // Floating Right Hand
-              '<g style="animation: botHandRight 2.4s ease-in-out infinite;">',
-                '<circle cx="106" cy="84" r="7" fill="url(#botMetalHead)" stroke="#1e293b" stroke-width="2" />',
-                '<circle cx="106" cy="84" r="2.5" fill="#38bdf8" />',
-              '</g>',
+        <!-- Orbital Dyson Ring Station -->
+        <g transform="translate(720, 285)" filter="drop-shadow(0 16px 28px rgba(0,0,0,0.85))">
+          <g style="animation: galaxySpinSlow 45s linear infinite;">
+            <circle cx="0" cy="0" r="128" fill="none" stroke="url(#stationHullMetal)" stroke-width="18" />
+            <circle cx="0" cy="0" r="128" fill="none" stroke="#67e8f9" stroke-width="4" stroke-dasharray="8 14" />
+          </g>
+          <circle cx="0" cy="0" r="42" fill="#090d1e" stroke="#38bdf8" stroke-width="4" />
+          <circle cx="0" cy="0" r="26" fill="#0284c7" stroke="#67e8f9" stroke-width="2.5" filter="drop-shadow(0 0 16px #38bdf8)" />
+          <circle cx="0" cy="0" r="12" fill="#ffffff" />
+        </g>
 
-              // Torso Armor + Shoulder Pads
-              '<path d="M 27 66 L 93 66 L 81 107 L 39 107 Z" fill="url(#botMetalBody)" stroke="#1e293b" stroke-width="2.5" stroke-linejoin="round" />',
-              '<path d="M 31 70 L 89 70" stroke="#ffffff" stroke-width="1.5" opacity="0.6" />',
+        <!-- Success Event Wormhole & Hyperspace Warp Lines -->
+        <g id="hyperdrive-warp-lines">
+          <g stroke="#67e8f9" stroke-width="3.5" stroke-linecap="round" opacity="0.85">
+            <line x1="720" y1="285" x2="40" y2="20" /><line x1="720" y1="285" x2="1400" y2="20" />
+            <line x1="720" y1="285" x2="0" y2="220" /><line x1="720" y1="285" x2="1440" y2="220" />
+          </g>
+        </g>
 
-              // Chest Arc Reactor & Telemetry Badge
-              '<circle cx="60" cy="84" r="11" fill="#0f172a" stroke="#334155" stroke-width="2" />',
-              '<circle cx="60" cy="84" r="7.5" fill="#38bdf8" opacity="0.9" />',
-              '<circle cx="60" cy="84" r="3.5" fill="#ffffff" />',
-              '<line x1="42" y1="98" x2="78" y2="98" stroke="#475569" stroke-width="2" stroke-linecap="round" />',
+        <g id="wormhole-stargate-fx">
+          <circle cx="720" cy="285" r="122" fill="url(#wormholeEventHorizon)" />
+          <circle cx="720" cy="285" r="105" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="28 14" />
+          <circle cx="720" cy="285" r="76" fill="none" stroke="#fde047" stroke-width="6" stroke-dasharray="18 12" />
+        </g>
 
-              // Bottom Thruster Nozzle
-              '<path d="M 45 107 L 75 107 L 69 114 L 51 114 Z" fill="#1e293b" />',
+        <!-- Lunar Base Surface -->
+        <path d="M -80 505 Q 260 430 640 490 T 1520 465 L 1520 900 L -80 900 Z" fill="url(#farLunarRidge)" />
+        <path d="M -100 555 Q 340 485 760 550 T 1540 520 L 1540 900 L -100 900 Z" fill="url(#midLunarSurface)" />
+      </svg>
 
-              // Multi-Ring Repulsor Jet Plume
-              '<g style="transform-origin: 60px 114px; animation: flickerRepulsor 0.18s infinite alternate;">',
-                '<ellipse cx="60" cy="121" rx="14" ry="8" fill="url(#botCoreGlow)" />',
-                '<ellipse cx="60" cy="118" rx="8" ry="4" fill="#e0f2fe" />',
-              '</g>',
-            '</svg>',
-          '</div>',
+      <div id="spaceschool-eruption-particles" style="position: absolute; inset: 0; pointer-events: none; z-index: 6; overflow: hidden;"></div>
 
-          // ANSWER INPUT + SUBMIT BUTTON
-          '<div style="display: flex; align-items: center; gap: 8px; position: relative; z-index: 5; pointer-events: auto;">',
-            '<input id="math-answer-input" type="number" placeholder="?" style="pointer-events: auto; width: 70px; height: 50px; text-align: center; font-size: 1.8rem; font-weight: bold; color: #f8fafc; background: #0f172a; border: 2px solid #38bdf8; border-radius: 10px; outline: none; box-shadow: 0 0 12px rgba(56,189,248,0.3);" />',
-            '<button id="math-submit-btn" style="pointer-events: auto; height: 50px; padding: 0 16px; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #0f172a; font-weight: 800; font-size: 1rem; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(56,189,248,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Launch</button>',
-          '</div>',
-        '</div>',
-      '</div>',
-    '</div>'
-  ].join("");
+      <!-- 2. QUANTUM HOLO-TABLE COMMAND CONSOLE (MATH BOARD) + COMMANDER NOVA -->
+      <div style="position: absolute; bottom: 178px; left: 47%; transform: translateX(-50%); display: flex; align-items: flex-end; justify-content: center; gap: 32px; width: 94%; max-width: 920px; z-index: 5; pointer-events: none;">
+
+        <!-- THE QUANTUM HOLOLABEL TABLE -->
+        <div id="holotable-board" style="position: relative; width: 410px; max-width: 56vw; min-height: 260px; background: radial-gradient(circle at 50% 35%, #0c4a6e 0%, #090d1e 70%, #02040a 100%); border: 7px solid #38bdf8; border-radius: 20px; box-shadow: 0 18px 38px rgba(2, 6, 23, 0.85), inset 0 0 28px rgba(56, 189, 248, 0.35); padding: 26px 32px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2;">
+          
+          <div style="position: absolute; top: -16px; background: linear-gradient(90deg, #0284c7, #38bdf8, #0284c7); border: 3px solid #fde047; color: #f0fdf4; font-weight: 900; font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 18px; border-radius: 999px; box-shadow: 0 4px 12px rgba(2,132,199,0.5);">
+            🌌 Quantum Astro-Holocron
+          </div>
+
+          <div id="equation-container" style="position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 24px;">
+            <div style="display: flex; flex-direction: column; align-items: flex-end; font-family: 'Nunito', monospace; font-size: 3.9rem; font-weight: 900; color: #f0fdf4; letter-spacing: 0.06em; line-height: 1.04; text-shadow: 0 0 16px rgba(56, 189, 248, 0.9);">
+              <div id="math-num1">17</div>
+              <div style="display: flex; align-items: center; gap: 18px;">
+                <span id="math-op" style="color: #38bdf8; font-size: 3.2rem; text-shadow: 0 0 12px #38bdf8;">+</span>
+                <span id="math-num2">15</span>
+              </div>
+              <div style="width: 108%; height: 7px; background: #38bdf8; border-radius: 999px; margin: 7px -4% 6px 0; box-shadow: 0 0 10px #38bdf8;"></div>
+              <div id="math-question-mark" style="color: #fde047; letter-spacing: 0.16em; font-size: 3.1rem; text-shadow: 0 0 12px rgba(250, 204, 21, 0.8);">??</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMMANDER NOVA — HIGH-DETAIL GALAXY FLIGHT INSTRUCTOR -->
+        <div style="display: flex; flex-direction: column; align-items: center; position: relative; margin-bottom: -4px;">
+          <div id="nova-speech-bubble" style="background: #082f49; color: #38bdf8; border: 3px solid #38bdf8; border-radius: 16px; padding: 6px 14px; font-size: 0.85rem; font-weight: 900; margin-bottom: 4px; box-shadow: 0 5px 0 #0284c7, 0 8px 16px rgba(0,0,0,0.55); white-space: nowrap; transition: all 0.2s;">
+            Solve the coordinates to ignite the Stargate! 🚀✨
+          </div>
+
+          <div style="position: relative; width: 195px; height: 235px; display: flex; justify-content: center; align-items: flex-end;">
+            <div style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 165px; height: 26px; background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.55) 0%, rgba(2, 6, 23, 0.8) 58%, transparent 80%); border-radius: 50%; z-index: 1;"></div>
+
+            <div id="nova-mascot" class="nova-idle" style="position: relative; width: 190px; height: 220px; z-index: 2; filter: drop-shadow(0 10px 18px rgba(2, 6, 23, 0.7));">
+              <svg viewBox="0 0 220 240" style="width: 100%; height: 100%; overflow: visible;">
+                <defs>
+                  <linearGradient id="novaSuit" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="50%" stop-color="#0284c7" />
+                    <stop offset="100%" stop-color="#0f172a" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Jetpack & Hover Thrusters -->
+                <rect x="92" y="110" width="36" height="52" rx="8" fill="#334155" stroke="#0f172a" stroke-width="2.5" />
+                <ellipse cx="110" cy="165" rx="14" ry="7" fill="#67e8f9" filter="drop-shadow(0 0 10px #38bdf8)" />
+
+                <!-- Space Suit Torso & Golden Pauldrons -->
+                <rect x="74" y="122" width="72" height="74" rx="26" fill="url(#novaSuit)" stroke="#0f172a" stroke-width="2.8" />
+                <circle cx="110" cy="155" r="9" fill="#fde047" stroke="#b45309" stroke-width="2" filter="drop-shadow(0 0 8px #fde047)" />
+                <polygon points="76,122 56,132 74,146" fill="#fde047" stroke="#b45309" stroke-width="1.8" />
+                <polygon points="144,122 164,132 146,146" fill="#fde047" stroke="#b45309" stroke-width="1.8" />
+
+                <!-- Bubble Helmet & Face -->
+                <circle cx="110" cy="78" r="34" fill="rgba(186, 230, 253, 0.24)" stroke="#38bdf8" stroke-width="3" />
+                <circle cx="110" cy="78" r="26" fill="#fcd34d" stroke="#b45309" stroke-width="2" />
+                <circle cx="98" cy="72" r="4" fill="#0f172a" />
+                <circle cx="122" cy="72" r="4" fill="#0f172a" />
+                <path d="M 102 90 Q 110 96 118 90" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M 82 65 A 24 24 0 0 1 138 65" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3. STAR-ACADEMY CONSOLE CONTROL DECK -->
+      <div style="position: absolute; bottom: 86px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 10; pointer-events: auto; filter: drop-shadow(0 14px 26px rgba(2, 6, 23, 0.85));">
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #020617 100%); border: 3px solid #38bdf8; border-radius: 16px; padding: 10px 24px; display: flex; align-items: center; gap: 18px; box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 0 22px rgba(56,189,248,0.35);">
+          
+          <div style="display: flex; flex-direction: column; min-width: 155px;">
+            <span style="font-size: 0.68rem; font-weight: 900; color: #38bdf8; letter-spacing: 0.14em; text-transform: uppercase;">🚀 COMMAND CONSOLE</span>
+            <span id="system-status-text" style="font-size: 0.85rem; font-weight: 900; color: #f0fdf4; letter-spacing: 0.06em;">GATEWAY: STANDBY</span>
+          </div>
+
+          <input id="math-answer-input" type="number" placeholder="?" style="pointer-events: auto; width: 84px; height: 52px; text-align: center; font-size: 1.95rem; font-weight: 900; color: #f0fdf4; background: #020617; border: 3px solid #38bdf8; border-radius: 12px; outline: none; box-shadow: inset 0 3px 6px rgba(0,0,0,0.4), 0 0 12px rgba(56,189,248,0.45);" />
+
+          <button id="math-submit-btn" style="pointer-events: auto; height: 52px; padding: 0 24px; background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); color: #ffffff; font-weight: 900; font-size: 1.08rem; border: 2px solid #fde047; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; box-shadow: 0 4px 14px rgba(56,189,248,0.45); transition: transform 0.1s;">
+            Submit
+          </button>
+        </div>
+      </div>
+
+    </div>
+  `;
 
   loadNewEquation();
   setupMathControls();
@@ -338,11 +416,59 @@ export function loadNewEquation() {
   }
 }
 
+function triggerStargateWarp() {
+  const stargate = document.getElementById("wormhole-stargate-fx");
+  const warpLines = document.getElementById("hyperdrive-warp-lines");
+  const particleHost = document.getElementById("spaceschool-eruption-particles");
+
+  if (stargate) {
+    stargate.classList.remove("ignited");
+    void stargate.offsetWidth;
+    stargate.classList.add("ignited");
+  }
+  if (warpLines) {
+    warpLines.classList.remove("ignited");
+    void warpLines.offsetWidth;
+    warpLines.classList.add("ignited");
+  }
+
+  if (!particleHost) return;
+  particleHost.innerHTML = "";
+
+  const colors = ["#38bdf8", "#67e8f9", "#fde047", "#ffffff", "#f472b6"];
+
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement("div");
+    const color = colors[i % colors.length];
+    const tx = (Math.random() - 0.5) * 580 + "px";
+    const ty = -(140 + Math.random() * 380) + "px";
+    const rot = (Math.random() * 360 - 180) + "deg";
+    const size = 8 + Math.random() * 12;
+
+    p.style.cssText = `
+      position: absolute;
+      left: 50%;
+      top: 32%;
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, ${color});
+      box-shadow: 0 0 14px ${color};
+      --tx: ${tx};
+      --ty: ${ty};
+      --rot: ${rot};
+      animation: spaceParticleArc ${1.1 + Math.random() * 0.55}s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `;
+    particleHost.appendChild(p);
+  }
+}
+
 function setupMathControls() {
   const btn = document.getElementById("math-submit-btn");
   const input = document.getElementById("math-answer-input");
-  const rocket = document.getElementById("rocket-svg");
   const statusSpan = document.getElementById("system-status-text");
+  const nova = document.getElementById("nova-mascot");
+  const speech = document.getElementById("nova-speech-bubble");
 
   if (!btn || !input) return;
 
@@ -350,43 +476,68 @@ function setupMathControls() {
     if (statusSpan) statusSpan.textContent = text;
   }
 
-  setStatus("SYSTEM: READY");
-
   function handleCheck() {
     const result = submitAnswer(input.value.trim());
     if (result.ignored) return;
 
     if (result.success) {
-      if (rocket) {
-        rocket.classList.remove("rocket-launching");
-        void rocket.offsetWidth;
-        rocket.classList.add("rocket-launching");
-        setTimeout(() => {
-          rocket.classList.remove("rocket-launching");
-        }, 1400);
+      triggerStargateWarp();
+
+      if (nova) {
+        nova.classList.remove("nova-party", "nova-oops");
+        void nova.offsetWidth;
+        nova.classList.add("nova-party");
+      }
+      if (speech) {
+        speech.textContent = "STARGATE ENGAGED! HYPERSPACE JUMP!! 🚀✨";
+        speech.style.borderColor = "#fde047";
       }
 
-      setStatus("LAUNCH SUCCESS");
-      input.style.borderColor = "#10b981";
+      setStatus("🚀 STARGATE JUMP ACTIVE!!");
+      input.style.borderColor = "#34d399";
+
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
-        setStatus("SYSTEM: READY");
+        setStatus("GATEWAY: STANDBY");
+        if (speech) {
+          speech.textContent = "Outstanding piloting! Next coordinates! 🌌";
+          speech.style.borderColor = "#38bdf8";
+        }
         loadNewEquation();
-      }, 900);
+      }, 1500);
     } else {
-      setStatus("TRAJECTORY ERROR");
+      if (nova) {
+        nova.classList.remove("nova-party", "nova-oops");
+        void nova.offsetWidth;
+        nova.classList.add("nova-oops");
+      }
+      if (speech) {
+        speech.textContent = "Jump coordinates misaligned! Retry! ⚠️";
+        speech.style.borderColor = "#ef4444";
+      }
+
+      setStatus("⚠️ WARP ERROR! RETRY");
       input.style.borderColor = "#ef4444";
+
       setTimeout(() => {
         input.style.borderColor = "#38bdf8";
         input.value = "";
-        setStatus("SYSTEM: READY");
-      }, 900);
+        setStatus("GATEWAY: STANDBY");
+        if (speech) {
+          speech.textContent = "Check your calculations, cadet! 🚀";
+          speech.style.borderColor = "#38bdf8";
+        }
+      }, 950);
     }
   }
 
+  btn.addEventListener("click", handleKeyCheck); // fallback or direct bind
   btn.addEventListener("click", handleCheck);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") handleCheck();
   });
 }
+
+// Export aliases
+export const loadSpaceAcademy = loadSpaceSchool;
