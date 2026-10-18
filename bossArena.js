@@ -1030,13 +1030,16 @@
   } else {
     initBossRadarHUD();
   }
-
-  window.BossArena = {
-    open: openBossArena,
-    triggerReady: function () {
-      bossReady = true;
-      streakCount = 5;
-      renderRadarHUD();
-    }
-  };
+// Expose to window safely
+  if (typeof window !== "undefined") {
+    window.BossArena = {
+      open: openBossArena,
+      triggerReady: function () {
+        bossReady = true;
+        streakCount = 5;
+        renderRadarHUD();
+      }
+    };
+  }
 })();
+ 
