@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Scales the 1280px game stage proportionally on mobile screens -->
-  <meta name="viewport" content="width=1280, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   
   <!-- Enables full-screen Web App mode when added to iPhone/Android Home Screen -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,26 +22,62 @@
     html, body {
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       height: 100dvh;
       overflow: hidden;
-      background: #0f172a;
+      background: #060913;
       touch-action: manipulation;
       -webkit-text-size-adjust: 100%;
       overscroll-behavior: none;
     }
 
-    /* Fix for Boss Arena overlays which use 100vw/100vh in JS */
-    #boss-arena-overlay {
-      width: 100% !important;
-      height: 100% !important;
+    /* Fixed 1440x900 Master Game Stage that auto-scales to fit any screen height & width */
+    #game-container {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      width: 1440px !important;
+      height: 900px !important;
+      transform: translate(-50%, -50%) scale(var(--stage-scale, 1)) !important;
+      transform-origin: center center !important;
+      z-index: 1;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Scale Top HUD, Boss Radar & Boss Arena cleanly on narrow/short mobile landscape screens */
+    @media screen and (max-height: 550px) {
+      #ui-layer {
+        transform: scale(0.76);
+        transform-origin: top center;
+      }
+      #boss-radar-hud {
+        transform: scale(0.78);
+        transform-origin: bottom right;
+        bottom: 10px !important;
+        right: 12px !important;
+      }
     }
   </style>
+
+  <script>
+    // Dynamically calculates the exact scale so the 1440x900 stage never clips vertically or horizontally
+    function updateStageScale() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scale = Math.min(vw / 1440, vh / 900);
+      document.documentElement.style.setProperty('--stage-scale', scale);
+    }
+    window.addEventListener('resize', updateStageScale);
+    window.addEventListener('orientationchange', () => setTimeout(updateStageScale, 150));
+    document.addEventListener('DOMContentLoaded', updateStageScale);
+    updateStageScale();
+  </script>
 </head>
 <body>
   <!-- 1. Base Game Layer -->
-  <div id="game-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+  <div id="game-container"></div>
   
   <!-- 2. World Map Layer -->
   <div id="world-map-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;"></div>
